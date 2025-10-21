@@ -1,0 +1,4579 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>WSET Level 3 Tasting Notes</title>
+
+	<meta name="description"
+		content="Export a tasting note based on the WSET Level 3 Systematic Approach to Tasting Wine.">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<!-- Open Graph preview-->
+
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="WSET Level 3 Tasting Notes">
+	<meta property="og:description"
+		content="Export a tasting note based on the WSET Level 3 Systematic Approach to Tasting Wine.">
+
+	<style>
+		:root {
+			--desktop-content-width: 1024px;
+			--export-content-width: 860px;
+			--dark-green: #068841;
+			--light-green: #cae7c9;
+			--control-gray: #ddd;
+			--very-dark-green: #056f35;
+			--garnet: #ca2b28;
+			--dark-garnet: #7a0d0b;
+			--text-color: #333;
+
+			--custom-option-border-radius: 4pt;
+			--custom-option-padding: 5px 10px;
+			--custom-option-margin: 3px;
+			--custom-option-max-width: 150px;
+		}
+
+
+		body {
+			font-family: Helvetica, Arial, sans-serif;
+			font-size: 16px;
+			color: var(--text-color);
+			max-width: 850px;
+			margin-left: auto;
+			margin-right: auto;
+			padding: 20px;
+		}
+
+		h1 {
+			line-height: 1.2;
+		}
+
+		a,
+		a:visited {
+			color: #0a66cc;
+			text-decoration: underline;
+		}
+
+		a:hover,
+		a:active {
+			color: #084b99;
+		}
+
+		p {
+			line-height: 1.3;
+		}
+
+		#header {
+			margin-bottom: 50px;
+		}
+
+		#header img {
+			max-height: 60px;
+			max-width: 100%;
+			width: auto;
+			height: auto;
+		}
+
+		#footer {
+			margin-top: 50px;
+		}
+
+		#footer p {
+			font-size: 14px;
+			text-align: left;
+		}
+
+		/* ===== Result Modal Styles ===== */
+		body.modal-open {
+			overflow: hidden;
+		}
+
+		.result-modal-backdrop {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			align-items: flex-start;
+			background: rgba(0, 0, 0, 0.5);
+			padding: 40px 20px;
+			box-sizing: border-box;
+			overflow-y: auto;
+			z-index: 1000;
+		}
+
+		.result-modal-backdrop[hidden] {
+			display: none;
+		}
+
+		.result-modal {
+			background-color: #fff;
+			border: 2px solid var(--dark-green);
+			box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+			max-width: var(--desktop-content-width);
+			width: 100%;
+			padding: 20px;
+			box-sizing: border-box;
+		}
+
+		.result-modal h1 {
+			margin-top: 0;
+		}
+
+		.result-modal-meta {
+			font-style: italic;
+			margin: 0 0 20px 0;
+		}
+
+		.result-modal-actions {
+			display: flex;
+			flex-wrap: wrap;
+			gap: 10px;
+			margin-top: 30px;
+			align-items: center;
+		}
+
+		.result-modal-actions button {
+			background-color: var(--dark-green);
+			border: none;
+			color: #fff;
+			cursor: pointer;
+			font-size: 16px;
+			padding: 10px 16px;
+			text-transform: none;
+		}
+
+		.result-modal-actions button:hover,
+		.result-modal-actions button:focus-visible {
+			background-color: var(--very-dark-green);
+		}
+
+		.result-modal-actions button:focus {
+			outline: none;
+		}
+
+		.result-modal-actions button:focus:not(:focus-visible):not(:hover) {
+			background-color: var(--dark-green);
+		}
+
+		.result-modal-actions .spacer {
+			flex-grow: 1;
+		}
+
+		.result-modal-actions button.close-button {
+			background-color: var(--garnet);
+		}
+
+		.result-modal-actions button.close-button:hover,
+		.result-modal-actions button.close-button:focus-visible {
+			background-color: var(--dark-garnet);
+		}
+
+		.result-modal-actions button.close-button:focus:not(:focus-visible):not(:hover) {
+			background-color: var(--garnet);
+		}
+
+		.result-group-body {
+			padding: 5px 0;
+		}
+
+		.result-entry {
+			margin: 2px 0;
+			color: var(--text-color);
+		}
+
+		.result-entry-label {
+			font-weight: bold;
+			font-style: italic;
+			margin-right: 6px;
+		}
+
+		.result-subsection {
+			border: 2px solid var(--dark-green);
+			margin: 20px 0;
+		}
+
+		.result-subsection-aroma {
+			border-left: none;
+			border-right: none;
+			border-top: 2px solid var(--dark-green);
+			border-bottom: 2px solid var(--dark-green);
+			margin: 2px 0 10px;
+		}
+
+		.result-modal section .result-subsection-aroma:last-of-type {
+			margin-bottom: 0;
+		}
+
+		.result-modal .result-subsection-aroma:last-of-type .control-group:last-child {
+			padding-bottom: 0;
+			margin-bottom: 0;
+		}
+
+		.result-modal section .control-group:last-of-type {
+			border-bottom: none;
+		}
+
+		.result-modal .result-subheading {
+			color: #fff;
+			background-color: var(--dark-green);
+			padding: 8px 10px 6px;
+			margin: 15px 0 1px;
+		}
+
+		.result-modal .result-subheading+.result-subsection {
+			margin-top: 1px;
+		}
+
+		.result-modal .result-subheading h3 {
+			margin: 0;
+			font-size: 16px;
+			font-weight: bold;
+			text-transform: none;
+		}
+
+		.result-modal .result-subheading p {
+			margin: 4px 0 0 0;
+			font-size: 13px;
+			font-style: italic;
+		}
+
+		.result-modal section.result-section-aroma-wrapper {
+			border-bottom: none;
+			padding-bottom: 0;
+		}
+
+		/* ===== End Result Modal Styles ===== */
+
+		.summary-modal-backdrop {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background: rgba(0, 0, 0, 0.55);
+			z-index: 1100;
+			padding: 20px;
+			box-sizing: border-box;
+		}
+
+		.summary-modal-backdrop[hidden] {
+			display: none;
+		}
+
+		.summary-modal {
+			background-color: #fff;
+			border: 2px solid var(--dark-green);
+			box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+			max-width: 700px;
+			width: 100%;
+			padding: 20px;
+			box-sizing: border-box;
+			display: flex;
+			flex-direction: column;
+			gap: 20px;
+		}
+
+		.summary-modal h2 {
+			margin: 0;
+		}
+
+		.summary-content {
+			white-space: pre-wrap;
+			line-height: 1.5;
+			font-size: 16px;
+			color: var(--text-color);
+			max-height: 60vh;
+			overflow-y: auto;
+			border: 1px solid var(--control-gray);
+			padding: 12px;
+			background-color: #f9f9f9;
+		}
+
+		.summary-actions {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+		}
+
+		.summary-actions .spacer {
+			flex-grow: 1;
+		}
+
+		.summary-actions button {
+			background-color: var(--dark-green);
+			border: none;
+			color: #fff;
+			cursor: pointer;
+			font-size: 16px;
+			padding: 10px 16px;
+		}
+
+		.summary-actions button:hover,
+		.summary-actions button:focus-visible {
+			background-color: var(--very-dark-green);
+		}
+
+		.summary-actions button:focus {
+			outline: none;
+		}
+
+		.summary-actions button:focus:not(:focus-visible):not(:hover) {
+			background-color: var(--dark-green);
+		}
+
+		.summary-actions button.close-button {
+			background-color: var(--garnet);
+		}
+
+		.summary-actions button.close-button:hover,
+		.summary-actions button.close-button:focus-visible {
+			background-color: var(--dark-garnet);
+		}
+
+		.summary-actions button.close-button:focus:not(:focus-visible):not(:hover) {
+			background-color: var(--garnet);
+		}
+
+		html.exporting-desktop {
+			width: var(--export-content-width);
+		}
+
+		html.exporting-desktop body {
+			max-width: var(--export-content-width);
+			width: var(--export-content-width);
+		}
+
+		html.exporting-desktop .result-modal {
+			width: var(--export-content-width) !important;
+			max-width: var(--export-content-width) !important;
+		}
+
+		.result-subsection-header {
+			background-color: var(--dark-green);
+			color: #fff;
+			padding: 10px;
+		}
+
+		.result-subsection-header h3 {
+			margin: 0;
+			font-size: 16px;
+			text-transform: none;
+		}
+
+		.result-subsection-header p {
+			margin: 5px 0 0 0;
+			font-size: 14px;
+			font-style: italic;
+			color: #fff;
+		}
+
+		.result-subsection-body {
+			background-color: #fff;
+			padding: 0;
+		}
+
+		.result-modal .result-subsection .control-group {
+			padding: 5px 10px;
+		}
+
+		.result-modal .result-group {
+			flex-wrap: nowrap;
+			align-items: flex-start;
+			gap: 10px;
+		}
+
+		.result-modal .result-group .control-group-label {
+			flex-grow: 0;
+			flex-shrink: 0;
+			width: 200px;
+			margin-right: 10px;
+		}
+
+		.result-modal .result-group .control-group-body {
+			flex: 1 1 0;
+			min-width: 0;
+			display: block;
+		}
+
+		.result-modal .result-subsection .control-group:last-child {
+			border-bottom: none;
+		}
+
+		.result-modal .result-subsection .control-group-body-grouping-body {
+			padding: 0;
+		}
+
+		.result-modal .result-group .control-group-body-grouping {
+			display: flex;
+			align-items: flex-start;
+			flex-wrap: wrap;
+			column-gap: 10px;
+			row-gap: 6px;
+			margin-bottom: 4px;
+		}
+
+		.result-modal .result-group .control-group-body-grouping:last-child {
+			margin-bottom: 0;
+		}
+
+		.result-modal .result-group .control-group-body-grouping-label {
+			width: auto;
+			min-width: 80px;
+			text-align: right;
+			margin: 0;
+			padding-right: 8px;
+		}
+
+		.result-modal .result-group-body {
+			padding: 0;
+			display: inline-flex;
+			flex-wrap: wrap;
+			gap: 6px;
+			align-items: center;
+		}
+
+		.result-modal .result-entry {
+			display: inline-flex;
+			align-items: baseline;
+			margin: 0;
+		}
+
+		.result-modal .result-entry-values {
+			white-space: normal;
+		}
+
+		.attribution {
+			font-style: italic;
+		}
+
+		section {
+			margin-bottom: 30px;
+			border: 2px solid var(--dark-green);
+		}
+
+		section h2 {
+			margin: 0;
+			padding: 10px 10px 10px;
+			font-size: 20px;
+			font-weight: bold;
+			text-transform: uppercase;
+			line-height: 100%;
+			color: #fff;
+			background-color: var(--dark-green);
+		}
+
+		.control-group-stack {
+			border-bottom: 0px solid var(--dark-green);
+		}
+
+		.control-group-stack+.aroma-flavor-heading {
+			border-top: 1px solid var(--dark-green);
+		}
+
+		.control-group {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			background-color: var(--light-green);
+			padding: 5px 10px;
+			border-bottom: 1px solid var(--dark-green);
+		}
+
+		section>.control-group-stack>.control-group:last-child:not(.keep-bottom-border) {
+			border-bottom: none;
+		}
+
+		.control-group:nth-child(even) {
+			background-color: #fff;
+		}
+
+		.control-group-divider {
+			height: 1px;
+			background-color: var(--dark-green);
+			margin: 5px -10px 0;
+		}
+
+		.control-group.force-border-bottom {
+			position: relative;
+			border-bottom: none;
+		}
+
+		.control-group.force-border-bottom::after {
+			content: '';
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			height: 1px;
+			background-color: var(--dark-green);
+		}
+
+		.control-group.keep-bottom-border {
+			border-bottom: 1px solid var(--dark-green);
+		}
+
+		.control-group-label {
+			width: 200px;
+			flex-grow: 0;
+			flex-shrink: 0;
+			margin: 0;
+		}
+
+		.control-group-label p {
+			font-size: 14px;
+			font-weight: normal;
+			font-style: italic;
+			line-height: 20px;
+			margin: 0;
+		}
+
+		.control-group-label p:nth-child(1) {
+			font-size: 16px;
+			font-weight: bold;
+			font-style: normal;
+		}
+
+		.control-group-label-with-sublabels {
+			width: 100px;
+		}
+
+		.control-group-body {
+			margin: 0;
+			font-size: 16px;
+			flex-grow: 1;
+		}
+
+		.control-group-label-with-sublabels .control-group-body {
+			width: 725px;
+		}
+
+		.control-group-body-grouping {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			margin-bottom: 8px;
+		}
+
+		.control-group-body-grouping:last-child {
+			margin-bottom: 0;
+		}
+
+		.control-group-body-grouping-label {
+			width: 90px;
+			flex-grow: 0;
+			flex-shrink: 0;
+			margin: 0;
+			padding: 0 10px 0 0;
+			font-style: italic;
+			text-align: right;
+		}
+
+		.control-group-body-grouping-body {
+			display: flex;
+			width: 100%;
+			flex-wrap: wrap;
+			align-items: center;
+		}
+
+
+
+		/*	
+ *
+ * Aroma and Flavor Characteristics
+ *
+ */
+
+		.aroma-flavor-section {
+			margin-bottom: 15px;
+		}
+
+		.aroma-flavor-heading {
+			color: #fff;
+			background-color: var(--dark-green);
+			padding: 8px 10px 6px;
+			margin-top: 15px;
+			margin-bottom: 1px;
+		}
+
+		.aroma-flavor-heading+.aroma-flavor-section .aroma-flavor-heading:first-child {
+			margin-top: 1px;
+		}
+
+		.aroma-flavor-section .aroma-flavor-heading {
+			margin-top: 0;
+		}
+
+		.aroma-flavor-section .aroma-flavor-heading {
+			margin-bottom: 0;
+		}
+
+		.aroma-flavor-heading h3 {
+			margin: 0;
+			font-size: 16px;
+			font-weight: bold;
+			text-transform: none;
+		}
+
+		.aroma-flavor-heading h4 {
+			font-size: 16px;
+			font-weight: bold;
+			font-style: normal;
+			margin: 0;
+		}
+
+		.aroma-flavor-heading p {
+			font-size: 14px;
+			font-weight: normal;
+			font-style: italic;
+			margin: 5px 0 0 0;
+		}
+
+		.aroma-flavor-subheadings {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			background-color: var(--light-green);
+			padding: 8px 10px;
+			border-bottom: 1px solid var(--dark-green);
+		}
+
+		.aroma-flavor-subheadings-clusters {
+			width: 200px;
+			margin: 0;
+		}
+
+		.aroma-flavor-subheadings-descriptors {
+			margin: 0 0 0 3px;
+		}
+
+		.aroma-flavor-subheadings p {
+			font-size: 16px;
+			font-weight: bold;
+			font-style: normal;
+			margin: 0;
+		}
+
+		.aroma-flavor-body {
+			background-color: #fff;
+			border-bottom: 1px solid var(--dark-green);
+		}
+
+		.aroma-flavor-body>.control-group:last-child {
+			border-bottom: none;
+		}
+
+		.aroma-flavor-body .control-group .control-group-label {
+			width: 200px;
+		}
+
+		.aroma-flavor-section+.control-group-stack {
+			border-top: 2px solid var(--dark-green);
+			/* Use a heavy top border on the first row after an aroma/flavor section */
+		}
+
+
+		/* Add to existing CSS */
+		.aroma-flavor-heading {
+			position: relative;
+		}
+
+		.collapsible-trigger {
+			position: absolute;
+			right: 0;
+			top: 0;
+			width: 40px;
+			height: 100%;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			background-color: transparent;
+			user-select: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+		}
+
+		.collapsible-arrow {
+			width: 0;
+			height: 0;
+			border-left: 6px solid transparent;
+			border-right: 6px solid transparent;
+			border-bottom: 6px solid white;
+			transition: transform 0.3s ease;
+		}
+
+		.collapsed .collapsible-arrow {
+			transform: rotate(180deg);
+		}
+
+		.collapsed .aroma-flavor-body {
+			display: none;
+		}
+
+		/*
+ *
+ * Controls
+ *
+ */
+
+		.control-group-body-grouping-body input[type="radio"],
+		.control-group-body-grouping-body input[type="checkbox"] {
+			display: none;
+		}
+
+		.control-group-body-grouping-body input[type="radio"]+label,
+		.control-group-body-grouping-body input[type="checkbox"]+label {
+			display: inline-block;
+			border: 1px solid var(--dark-green);
+			background-color: #fff;
+			max-width: 150px;
+			margin: 3px;
+			padding: 5px 10px;
+			text-align: center;
+			cursor: pointer;
+			user-select: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+		}
+
+		.control-group-body-grouping-body input[type="radio"]+label {
+			border-radius: 50vh;
+		}
+
+		.control-group-body-grouping-body input[type="checkbox"]+label {
+			border-radius: 4pt;
+		}
+
+		.control-group-body-grouping-body input[type="radio"]:checked+label,
+		.control-group-body-grouping-body input[type="checkbox"]:checked+label {
+			color: #fff;
+			background-color: var(--dark-green);
+		}
+
+		input[type="text"] {
+			display: inline-block;
+			text-align: left;
+			font-size: 16px;
+			border: 1px solid var(--dark-green);
+			border-radius: 0;
+			background-color: #fff;
+			min-width: 150px;
+			margin: 3px 0 3px 3px;
+			padding: 4px 8px;
+			text-align: left;
+			flex-grow: 1;
+		}
+
+		input[type="text"]:focus {
+			outline: medium solid var(--dark-green);
+		}
+
+		input[type="submit"],
+		button {
+			font-size: 16px;
+			font-weight: bold;
+			color: #fff;
+			background-color: var(--dark-green);
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+		}
+
+		input[type="submit"]:hover,
+		input[type="submit"]:active,
+		button:hover,
+		button:active {
+			background-color: var(--very-dark-green);
+		}
+
+		/*
+ *
+ * Mobile
+ *
+ */
+		@media screen and (max-width: 500px) {
+
+			html:not(.exporting-desktop) .control-group {
+				flex-direction: column;
+			}
+
+			html:not(.exporting-desktop) .control-group-label,
+			html:not(.exporting-desktop) .control-group-label-with-sublabels,
+			html:not(.exporting-desktop) .control-group-body,
+			html:not(.exporting-desktop) .control-group-body-grouping-label,
+			html:not(.exporting-desktop) .control-group-body-grouping-body,
+			html:not(.exporting-desktop) .aroma-flavor-body .control-group .control-group-label {
+				width: 100%;
+			}
+
+			html:not(.exporting-desktop) .control-group-body-grouping-label {
+				padding: 0;
+				text-align: left;
+			}
+
+			html:not(.exporting-desktop) .control-group-body-grouping {
+				flex-direction: column;
+			}
+
+			html:not(.exporting-desktop) .control-group-body-grouping-body input[type="radio"]+label,
+			html:not(.exporting-desktop) .control-group-body-grouping-body input[type="checkbox"]+label {
+				max-width: initial;
+				margin: 3px 6px 3px 0;
+			}
+
+			html:not(.exporting-desktop) input[type="text"] {
+				margin: 3px 0;
+			}
+
+			html:not(.exporting-desktop) .radio-separator {
+				display: none;
+			}
+		}
+
+		@media screen and (max-width: 600px) {
+
+			html:not(.exporting-desktop) #conclusions-readiness .control-group-body-grouping-body input[type="radio"]+label,
+			html:not(.exporting-desktop) #conclusions-readiness .control-group-body-grouping-body input[type="checkbox"]+label {
+				width: 100%;
+			}
+		}
+
+		.custom-option-label {
+			display: inline-block;
+			border: 1px solid var(--dark-green);
+			background-color: var(--dark-green);
+			color: #fff;
+			max-width: var(--custom-option-max-width);
+			margin: var(--custom-option-margin);
+			padding: var(--custom-option-padding);
+			text-align: center;
+			cursor: pointer;
+			border-radius: var(--custom-option-border-radius);
+		}
+
+		/* copy button*/
+		.copy-btn {
+			position: absolute;
+			right: 50px;
+			top: 50%;
+			transform: translateY(-50%);
+			background-color: white;
+			border: 1px solid var(--dark-green);
+			color: var(--dark-green);
+			padding: 4px 8px;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 12px;
+
+			/* Key animation property: Add transition for opacity and transform */
+			transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+			opacity: 1;
+			visibility: visible;
+			pointer-events: auto;
+		}
+
+		.aroma-flavor-section.collapsed .copy-btn {
+			opacity: 0;
+			visibility: hidden;
+			pointer-events: none;
+
+			/* Add a slight transform for a better fade-out effect */
+			transform: translateY(-50%) translateX(10px);
+		}
+
+		.copy-btn:hover {
+			background-color: #f0f0f0;
+		}
+
+		.aroma-flavor-heading {
+			position: relative;
+			padding-right: 160px;
+		}
+
+
+		/**
+		Header layout
+		**/
+
+		/* Layout: two columns, same row height */
+		.header-container {
+			display: grid;
+			/* grid ensures equal row height */
+			grid-template-columns: 1fr auto;
+			/* left expands, right fits content */
+			align-items: stretch;
+			/* make both columns equal height */
+			column-gap: 12px;
+		}
+
+		/* Left: vertically center the two lines within the row height */
+		.header-text {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			/* center h1 + p vertically */
+		}
+
+		.header-text h1 {
+			margin: 0;
+		}
+
+		.header-text p {
+			margin: 0;
+		}
+
+		.site-qr {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100%;
+			gap: 6px;
+		}
+
+		.qr-caption {
+			font-size: 0.8rem;
+			line-height: 1;
+			white-space: nowrap;
+			text-align: center;
+		}
+
+		.site-qr img {
+			width: 100px;
+			height: 100px;
+			object-fit: contain;
+		}
+
+		.zoom-btn {
+			background-color: var(--dark-green, #006644);
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			font-size: 12px;
+			padding: 3px 8px;
+			cursor: pointer;
+			transition: background-color 0.2s ease;
+		}
+
+		.zoom-btn:hover {
+			background-color: #008855;
+		}
+
+
+
+		.qr-modal {
+			display: none;
+			position: fixed;
+			inset: 0;
+			background: rgba(0, 0, 0, 0.7);
+			z-index: 999;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.qr-modal-content {
+			background: white;
+			padding: 20px;
+			border-radius: 10px;
+			position: relative;
+			text-align: center;
+		}
+
+		.qr-modal-content img {
+			width: 300px;
+			height: 300px;
+			object-fit: contain;
+		}
+
+		.close-btn {
+			position: absolute;
+			top: 5px;
+			right: 10px;
+			font-size: 24px;
+			cursor: pointer;
+		}
+
+		/**
+		Header layout
+		**/
+	</style>
+
+
+</head>
+
+<body>
+
+	<div class="header-container">
+		<div class="header-text">
+			<h1>WSET Level 3 Tasting Notes</h1>
+			<div style="height: 10px;"></div>
+			<p>
+				Based on the Systematic Approach to Tasting Wine (Level 3), © 2022 Wine & Spirit Education Trust.
+			</p>
+		</div>
+	</div>
+
+	<!-- Modal for zoomed QR -->
+	<script>
+		function showQrModal() {
+			document.getElementById('qrModal').style.display = 'flex';
+		}
+
+		function closeQrModal() {
+			document.getElementById('qrModal').style.display = 'none';
+		}
+	</script>
+
+	<div id="qrModal" class="qr-modal">
+		<div class="qr-modal-content">
+			<span class="close-btn" onclick="closeQrModal()">&times;</span>
+			<img src="site_url_qrc.jpg" alt="Zoomed QR Code">
+		</div>
+	</div>
+
+	<div style="height: 30px;"></div>
+
+
+	<form method="post" action="" onsubmit="return false;">
+
+		<section>
+			<h2>Appearance</h2>
+			<div class="control-group-stack">
+				<div class="control-group keep-bottom-border">
+					<div class="control-group-label">
+						<p>Clarity</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="appearance-clarity-clear" name="appearance-clarity"
+									value="clear">
+								<label for="appearance-clarity-clear">clear</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="appearance-clarity-hazy" name="appearance-clarity" value="hazy">
+								<label for="appearance-clarity-hazy">hazy (faulty?)</label>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group keep-bottom-border">
+					<div class="control-group-label">
+						<p>Intensity</p>
+					</div>
+					<div class="control-group-separator"></div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="appearance-intensity-pale" name="appearance-intensity"
+									value="pale">
+								<label for="appearance-intensity-pale">pale</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="appearance-intensity-medium" name="appearance-intensity"
+									value="medium">
+								<label for="appearance-intensity-medium">medium</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="appearance-intensity-deep" name="appearance-intensity"
+									value="deep">
+								<label for="appearance-intensity-deep">deep</label>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="control-group-label control-group-label-with-sublabels">
+						<p>Colour</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<p class="control-group-body-grouping-label">white</p>
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="appearance-color-white-lemongreen" name="appearance-color"
+									value="lemon-green">
+								<label for="appearance-color-white-lemongreen">lemon-green</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="appearance-color-white-lemon" name="appearance-color"
+									value="lemon">
+								<label for="appearance-color-white-lemon">lemon</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="appearance-color-white-gold" name="appearance-color"
+									value="gold">
+								<label for="appearance-color-white-gold">gold</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="appearance-color-white-amber" name="appearance-color"
+									value="amber">
+								<label for="appearance-color-white-amber">amber</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="appearance-color-white-brown" name="appearance-color"
+									value="brown">
+								<label for="appearance-color-white-brown">brown</label>
+							</div>
+						</div>
+						<div class="control-group-body-grouping">
+							<p class="control-group-body-grouping-label">rosé</p>
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="appearance-color-rose-pink" name="appearance-color"
+									value="pink">
+								<label for="appearance-color-rose-pink">pink</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="appearance-color-rose-salmon" name="appearance-color"
+									value="salmon">
+								<label for="appearance-color-rose-salmon">salmon</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="appearance-color-rose-orange" name="appearance-color"
+									value="orange">
+								<label for="appearance-color-rose-orange">orange</label>
+							</div>
+						</div>
+						<div class="control-group-body-grouping">
+							<p class="control-group-body-grouping-label">red</p>
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="appearance-color-red-purple" name="appearance-color"
+									value="purple">
+								<label for="appearance-color-red-purple">purple</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="appearance-color-red-ruby" name="appearance-color" value="ruby">
+								<label for="appearance-color-red-ruby">ruby</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="appearance-color-red-garnet" name="appearance-color"
+									value="garnet">
+								<label for="appearance-color-red-garnet">garnet</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="appearance-color-red-tawny" name="appearance-color"
+									value="tawny">
+								<label for="appearance-color-red-tawny">tawny</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="appearance-color-red-brown" name="appearance-color"
+									value="brown">
+								<label for="appearance-color-red-brown">brown</label>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Other Observations</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="checkbox" id="appearance-otherobservations-legstears"
+									name="appearance-otherobservations[]" value="legs/tears">
+								<label for="appearance-otherobservations-legstears">legs/tears</label>
+								<input type="checkbox" id="appearance-otherobservations-deposit"
+									name="appearance-otherobservations[]" value="deposit">
+								<label for="appearance-otherobservations-deposit">deposit</label>
+								<input type="checkbox" id="appearance-otherobservations-petillance"
+									name="appearance-otherobservations[]" value="pétillance">
+								<label for="appearance-otherobservations-petillance">pétillance</label>
+								<input type="checkbox" id="appearance-otherobservations-bubbles"
+									name="appearance-otherobservations[]" value="bubbles">
+								<label for="appearance-otherobservations-bubbles">bubbles</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<h2>Nose</h2>
+			<div class="control-group-stack">
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Condition</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="nose-condition-clean" name="nose-condition" value="clean">
+								<label for="nose-condition-clean">clean</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="nose-condition-unclean" name="nose-condition" value="unclean">
+								<label for="nose-condition-unclean">unclean (faulty?)</label>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Intensity</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="nose-intensity-light" name="nose-intensity" value="light">
+								<label for="nose-intensity-light">light</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="nose-intensity-mediumminus" name="nose-intensity"
+									value="medium(-)">
+								<label for="nose-intensity-mediumminus">medium(-)</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="nose-intensity-medium" name="nose-intensity" value="medium">
+								<label for="nose-intensity-medium">medium</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="nose-intensity-mediumplus" name="nose-intensity"
+									value="medium(+)">
+								<label for="nose-intensity-mediumplus">medium(+)</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="nose-intensity-pronounced" name="nose-intensity"
+									value="pronounced">
+								<label for="nose-intensity-pronounced">pronounced</label>
+							</div>
+						</div>
+					</div>
+					<div class="control-group-divider"></div>
+
+				</div>
+				<p> </p>
+
+
+			</div>
+
+			<div class="aroma-flavor-heading">
+				<h3>Aroma Characteristics</h3>
+				<p>Think in terms of primary, secondary and tertiary</p>
+			</div>
+			<div class="aroma-flavor-section" data-level="primary">
+				<div class="aroma-flavor-heading">
+					<h4>Primary Aromas</h4>
+					<p>The aromas of the grape and alcoholic fermentation</p>
+				</div>
+				<div class="aroma-flavor-body">
+					<div class="aroma-flavor-subheadings">
+						<p class="aroma-flavor-subheadings-clusters">Clusters</p>
+						<p class="aroma-flavor-subheadings-descriptors">Descriptors</p>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Floral</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-floral-acacia" name="nose-aromas-floral[]"
+										value="acacia">
+									<label for="nose-aromas-floral-acacia">acacia</label>
+									<input type="checkbox" id="nose-aromas-floral-honeysuckle"
+										name="nose-aromas-floral[]" value="honeysuckle">
+									<label for="nose-aromas-floral-honeysuckle">honeysuckle</label>
+									<input type="checkbox" id="nose-aromas-floral-chamomile" name="nose-aromas-floral[]"
+										value="chamomile">
+									<label for="nose-aromas-floral-chamomile">chamomile</label>
+									<input type="checkbox" id="nose-aromas-floral-elderflower"
+										name="nose-aromas-floral[]" value="elderflower">
+									<label for="nose-aromas-floral-elderflower">elderflower</label>
+									<input type="checkbox" id="nose-aromas-floral-geranium" name="nose-aromas-floral[]"
+										value="geranium">
+									<label for="nose-aromas-floral-geranium">geranium</label>
+									<input type="checkbox" id="nose-aromas-floral-blossom" name="nose-aromas-floral[]"
+										value="blossom">
+									<label for="nose-aromas-floral-blossom">blossom</label>
+									<input type="checkbox" id="nose-aromas-floral-rose" name="nose-aromas-floral[]"
+										value="rose">
+									<label for="nose-aromas-floral-rose">rose</label>
+									<input type="checkbox" id="nose-aromas-floral-violet" name="nose-aromas-floral[]"
+										value="violet">
+									<label for="nose-aromas-floral-violet">violet</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Green Fruit</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-greenfruit-apple"
+										name="nose-aromas-greenfruit[]" value="apple">
+									<label for="nose-aromas-greenfruit-apple">apple</label>
+									<input type="checkbox" id="nose-aromas-greenfruit-gooseberry"
+										name="nose-aromas-greenfruit[]" value="gooseberry">
+									<label for="nose-aromas-greenfruit-gooseberry">gooseberry</label>
+									<input type="checkbox" id="nose-aromas-greenfruit-pear"
+										name="nose-aromas-greenfruit[]" value="pear">
+									<label for="nose-aromas-greenfruit-pear">pear</label>
+									<input type="checkbox" id="nose-aromas-greenfruit-peardrop"
+										name="nose-aromas-greenfruit[]" value="pear drop">
+									<label for="nose-aromas-greenfruit-peardrop">pear drop</label>
+									<input type="checkbox" id="nose-aromas-greenfruit-quince"
+										name="nose-aromas-greenfruit[]" value="quince">
+									<label for="nose-aromas-greenfruit-quince">quince</label>
+									<input type="checkbox" id="nose-aromas-greenfruit-grape"
+										name="nose-aromas-greenfruit[]" value="grape">
+									<label for="nose-aromas-greenfruit-grape">grape</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Citrus Fruit</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-citrusfruit-grapefruit"
+										name="nose-aromas-citrusfruit[]" value="grapefruit">
+									<label for="nose-aromas-citrusfruit-grapefruit">grapefruit</label>
+									<input type="checkbox" id="nose-aromas-citrusfruit-lemon"
+										name="nose-aromas-citrusfruit[]" value="lemon">
+									<label for="nose-aromas-citrusfruit-lemon">lemon</label>
+									<input type="checkbox" id="nose-aromas-citrusfruit-lime"
+										name="nose-aromas-citrusfruit[]" value="lime">
+									<label for="nose-aromas-citrusfruit-lime">lime</label>
+									<input type="checkbox" id="nose-aromas-citrusfruit-orangepeel"
+										name="nose-aromas-citrusfruit[]" value="orange peel">
+									<label for="nose-aromas-citrusfruit-orangepeel">orange peel</label>
+									<input type="checkbox" id="nose-aromas-citrusfruit-lemonpeel"
+										name="nose-aromas-citrusfruit[]" value="lemon peel">
+									<label for="nose-aromas-citrusfruit-lemonpeel">lemon peel</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Stone Fruit</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-stonefruit-peach"
+										name="nose-aromas-stonefruit[]" value="peach">
+									<label for="nose-aromas-stonefruit-peach">peach</label>
+									<input type="checkbox" id="nose-aromas-stonefruit-apricot"
+										name="nose-aromas-stonefruit[]" value="apricot">
+									<label for="nose-aromas-stonefruit-apricot">apricot</label>
+									<input type="checkbox" id="nose-aromas-stonefruit-nectarine"
+										name="nose-aromas-stonefruit[]" value="nectarine">
+									<label for="nose-aromas-stonefruit-nectarine">nectarine</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Tropical Fruit</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-tropicalfruit-banana"
+										name="nose-aromas-tropicalfruit[]" value="banana">
+									<label for="nose-aromas-tropicalfruit-banana">banana</label>
+									<input type="checkbox" id="nose-aromas-tropicalfruit-lychee"
+										name="nose-aromas-tropicalfruit[]" value="lychee">
+									<label for="nose-aromas-tropicalfruit-lychee">lychee</label>
+									<input type="checkbox" id="nose-aromas-tropicalfruit-mango"
+										name="nose-aromas-tropicalfruit[]" value="mango">
+									<label for="nose-aromas-tropicalfruit-mango">mango</label>
+									<input type="checkbox" id="nose-aromas-tropicalfruit-melon"
+										name="nose-aromas-tropicalfruit[]" value="melon">
+									<label for="nose-aromas-tropicalfruit-melon">melon</label>
+									<input type="checkbox" id="nose-aromas-tropicalfruit-passionfruit"
+										name="nose-aromas-tropicalfruit[]" value="passion fruit">
+									<label for="nose-aromas-tropicalfruit-passionfruit">passion fruit</label>
+									<input type="checkbox" id="nose-aromas-tropicalfruit-pineapple"
+										name="nose-aromas-tropicalfruit[]" value="pineapple">
+									<label for="nose-aromas-tropicalfruit-pineapple">pineapple</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Red Fruit</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-redfruit-redcurrant"
+										name="nose-aromas-redfruit[]" value="redcurrant">
+									<label for="nose-aromas-redfruit-redcurrant">redcurrant</label>
+									<input type="checkbox" id="nose-aromas-redfruit-cranberry"
+										name="nose-aromas-redfruit[]" value="cranberry">
+									<label for="nose-aromas-redfruit-cranberry">cranberry</label>
+									<input type="checkbox" id="nose-aromas-redfruit-raspberry"
+										name="nose-aromas-redfruit[]" value="raspberry">
+									<label for="nose-aromas-redfruit-raspberry">raspberry</label>
+									<input type="checkbox" id="nose-aromas-redfruit-strawberry"
+										name="nose-aromas-redfruit[]" value="strawberry">
+									<label for="nose-aromas-redfruit-strawberry">strawberry</label>
+									<input type="checkbox" id="nose-aromas-redfruit-redcherry"
+										name="nose-aromas-redfruit[]" value="red cherry">
+									<label for="nose-aromas-redfruit-redcherry">red cherry</label>
+									<input type="checkbox" id="nose-aromas-redfruit-redplum"
+										name="nose-aromas-redfruit[]" value="red plum">
+									<label for="nose-aromas-redfruit-redplum">red plum</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Black Fruit</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-blackfruit-blackcurrant"
+										name="nose-aromas-blackfruit[]" value="blackcurrant">
+									<label for="nose-aromas-blackfruit-blackcurrant">blackcurrant</label>
+									<input type="checkbox" id="nose-aromas-blackfruit-blackberry"
+										name="nose-aromas-blackfruit[]" value="blackberry">
+									<label for="nose-aromas-blackfruit-blackberry">blackberry</label>
+									<input type="checkbox" id="nose-aromas-blackfruit-bramble"
+										name="nose-aromas-blackfruit[]" value="bramble">
+									<label for="nose-aromas-blackfruit-bramble">bramble</label>
+									<input type="checkbox" id="nose-aromas-blackfruit-blueberry"
+										name="nose-aromas-blackfruit[]" value="blueberry">
+									<label for="nose-aromas-blackfruit-blueberry">blueberry</label>
+									<input type="checkbox" id="nose-aromas-blackfruit-blackcherry"
+										name="nose-aromas-blackfruit[]" value="black cherry">
+									<label for="nose-aromas-blackfruit-blackcherry">black cherry</label>
+									<input type="checkbox" id="nose-aromas-blackfruit-blackplum"
+										name="nose-aromas-blackfruit[]" value="black plum">
+									<label for="nose-aromas-blackfruit-blackplum">black plum</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Dried/Cooked Fruit</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-driedcookedfruit-fig"
+										name="nose-aromas-driedcookedfruit[]" value="fig">
+									<label for="nose-aromas-driedcookedfruit-fig">fig</label>
+									<input type="checkbox" id="nose-aromas-driedcookedfruit-prune"
+										name="nose-aromas-driedcookedfruit[]" value="prune">
+									<label for="nose-aromas-driedcookedfruit-prune">prune</label>
+									<input type="checkbox" id="nose-aromas-driedcookedfruit-raisin"
+										name="nose-aromas-driedcookedfruit[]" value="raisin">
+									<label for="nose-aromas-driedcookedfruit-raisin">raisin</label>
+									<input type="checkbox" id="nose-aromas-driedcookedfruit-sultana"
+										name="nose-aromas-driedcookedfruit[]" value="sultana">
+									<label for="nose-aromas-driedcookedfruit-sultana">sultana</label>
+									<input type="checkbox" id="nose-aromas-driedcookedfruit-kirsch"
+										name="nose-aromas-driedcookedfruit[]" value="kirsch">
+									<label for="nose-aromas-driedcookedfruit-kirsch">kirsch</label>
+									<input type="checkbox" id="nose-aromas-driedcookedfruit-jamminess"
+										name="nose-aromas-driedcookedfruit[]" value="jamminess">
+									<label for="nose-aromas-driedcookedfruit-jamminess">jamminess</label>
+									<input type="checkbox" id="nose-aromas-driedcookedfruit-bakedstewedfruits"
+										name="nose-aromas-driedcookedfruit[]" value="bakedstewedfruits">
+									<label for="nose-aromas-driedcookedfruit-bakedstewedfruits">baked/stewed
+										fruits</label>
+									<input type="checkbox" id="nose-aromas-driedcookedfruit-preservedfruits"
+										name="nose-aromas-driedcookedfruit[]" value="preserved fruits">
+									<label for="nose-aromas-driedcookedfruit-preservedfruits">preserved fruits</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Herbaceous</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-herbaceous-greenbellpeppercapsicium"
+										name="nose-aromas-herbaceous[]" value="green bell pepper (capsicium)">
+									<label for="nose-aromas-herbaceous-greenbellpeppercapsicium">green bell pepper
+										(capsicium)</label>
+									<input type="checkbox" id="nose-aromas-herbaceous-grass"
+										name="nose-aromas-herbaceous[]" value="grass">
+									<label for="nose-aromas-herbaceous-grass">grass</label>
+									<input type="checkbox" id="nose-aromas-herbaceous-tomatoleaf"
+										name="nose-aromas-herbaceous[]" value="tomato leaf">
+									<label for="nose-aromas-herbaceous-tomatoleaf">tomato leaf</label>
+									<input type="checkbox" id="nose-aromas-herbaceous-asparagus"
+										name="nose-aromas-herbaceous[]" value="asparagus">
+									<label for="nose-aromas-herbaceous-asparagus">asparagus</label>
+									<input type="checkbox" id="nose-aromas-herbaceous-blackcurrantleaf"
+										name="nose-aromas-herbaceous[]" value="blackcurrant leaf">
+									<label for="nose-aromas-herbaceous-blackcurrantleaf">blackcurrant leaf</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Herbal</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-herbal-eucalyptus"
+										name="nose-aromas-herbal[]" value="eucalyptus">
+									<label for="nose-aromas-herbal-eucalyptus">eucalyptus</label>
+									<input type="checkbox" id="nose-aromas-herbal-mint" name="nose-aromas-herbal[]"
+										value="mint">
+									<label for="nose-aromas-herbal-mint">mint</label>
+									<input type="checkbox" id="nose-aromas-herbal-medicinal" name="nose-aromas-herbal[]"
+										value="medicinal">
+									<label for="nose-aromas-herbal-medicinal">medicinal</label>
+									<input type="checkbox" id="nose-aromas-herbal-lavender" name="nose-aromas-herbal[]"
+										value="lavender">
+									<label for="nose-aromas-herbal-lavender">lavender</label>
+									<input type="checkbox" id="nose-aromas-herbal-fennel" name="nose-aromas-herbal[]"
+										value="fennel">
+									<label for="nose-aromas-herbal-fennel">fennel</label>
+									<input type="checkbox" id="nose-aromas-herbal-dill" name="nose-aromas-herbal[]"
+										value="dill">
+									<label for="nose-aromas-herbal-dill">dill</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Pungent Spice</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-pungentspice-blackwhitepepper"
+										name="nose-aromas-pungentspice[]" value="black/white pepper">
+									<label for="nose-aromas-pungentspice-blackwhitepepper">black/white pepper</label>
+									<input type="checkbox" id="nose-aromas-pungentspice-liquorice"
+										name="nose-aromas-pungentspice[]" value="liquorice">
+									<label for="nose-aromas-pungentspice-liquorice">liquorice</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Other</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-other-simple" name="nose-aromas-other-simple"
+										value="simple">
+									<label for="nose-aromas-other-simple">simple</label>
+									<input type="checkbox" id="nose-aromas-other-flint" name="nose-aromas-other[]"
+										value="flint">
+									<label for="nose-aromas-other-flint">flint</label>
+									<input type="checkbox" id="nose-aromas-other-wetstones" name="nose-aromas-other[]"
+										value="wet stones">
+									<label for="nose-aromas-other-wetstones">wet stones</label>
+									<input type="checkbox" id="nose-aromas-other-wetwool" name="nose-aromas-other[]"
+										value="wet wool">
+									<label for="nose-aromas-other-wetwool">wet wool</label>
+									<input type="text" id="nose-aromas-other-text-primary" name="nose-aromas-other-text"
+										placeholder="Other">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="aroma-flavor-section" data-level="secondary">
+				<div class="aroma-flavor-heading">
+					<h4>Secondary Aromas</h4>
+					<p>The aromas of post-fermentation winemaking</p>
+					<div class="collapsible-trigger">
+						<div class="collapsible-arrow"></div>
+					</div>
+				</div>
+				<div class="aroma-flavor-body">
+					<div class="aroma-flavor-subheadings">
+						<p class="aroma-flavor-subheadings-clusters">Clusters</p>
+						<p class="aroma-flavor-subheadings-descriptors">Descriptors</p>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Yeast (<em>lees, autolysis</em>)</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-yeast-biscuit" name="nose-aromas-yeast[]"
+										value="biscuit">
+									<label for="nose-aromas-yeast-biscuit">biscuit</label>
+									<input type="checkbox" id="nose-aromas-yeast-bread" name="nose-aromas-yeast[]"
+										value="bread">
+									<label for="nose-aromas-yeast-bread">bread</label>
+									<input type="checkbox" id="nose-aromas-yeast-toast" name="nose-aromas-yeast[]"
+										value="toast">
+									<label for="nose-aromas-yeast-toast">toast</label>
+									<input type="checkbox" id="nose-aromas-yeast-pastry" name="nose-aromas-yeast[]"
+										value="pastry">
+									<label for="nose-aromas-yeast-pastry">pastry</label>
+									<input type="checkbox" id="nose-aromas-yeast-brioche" name="nose-aromas-yeast[]"
+										value="brioche">
+									<label for="nose-aromas-yeast-brioche">brioche</label>
+									<input type="checkbox" id="nose-aromas-yeast-breaddough" name="nose-aromas-yeast[]"
+										value="bread dough">
+									<label for="nose-aromas-yeast-breaddough">bread dough</label>
+									<input type="checkbox" id="nose-aromas-yeast-cheese" name="nose-aromas-yeast[]"
+										value="cheese">
+									<label for="nose-aromas-yeast-cheese">cheese</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Malolactic Conversion</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-malolacticconversion-butter"
+										name="nose-aromas-malolacticconversion[]" value="butter">
+									<label for="nose-aromas-malolacticconversion-butter">butter</label>
+									<input type="checkbox" id="nose-aromas-malolacticconversion-cheese"
+										name="nose-aromas-malolacticconversion[]" value="cheese">
+									<label for="nose-aromas-malolacticconversion-cheese">cheese</label>
+									<input type="checkbox" id="nose-aromas-malolacticconversion-cream"
+										name="nose-aromas-malolacticconversion[]" value="cream">
+									<label for="nose-aromas-malolacticconversion-cream">cream</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Oak</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-oak-vanilla" name="nose-aromas-oak[]"
+										value="vanilla">
+									<label for="nose-aromas-oak-vanilla">vanilla</label>
+									<input type="checkbox" id="nose-aromas-oak-cloves" name="nose-aromas-oak[]"
+										value="cloves">
+									<label for="nose-aromas-oak-cloves">cloves</label>
+									<input type="checkbox" id="nose-aromas-oak-nutmeg" name="nose-aromas-oak[]"
+										value="nutmeg">
+									<label for="nose-aromas-oak-nutmeg">nutmeg</label>
+									<input type="checkbox" id="nose-aromas-oak-coconut" name="nose-aromas-oak[]"
+										value="coconut">
+									<label for="nose-aromas-oak-coconut">coconut</label>
+									<input type="checkbox" id="nose-aromas-oak-butterscotch" name="nose-aromas-oak[]"
+										value="butterscotch">
+									<label for="nose-aromas-oak-butterscotch">butterscotch</label>
+									<input type="checkbox" id="nose-aromas-oak-toast" name="nose-aromas-oak[]"
+										value="toast">
+									<label for="nose-aromas-oak-toast">toast</label>
+									<input type="checkbox" id="nose-aromas-oak-cedar" name="nose-aromas-oak[]"
+										value="cedar">
+									<label for="nose-aromas-oak-cedar">cedar</label>
+									<input type="checkbox" id="nose-aromas-oak-charredwood" name="nose-aromas-oak[]"
+										value="charred wood">
+									<label for="nose-aromas-oak-charredwood">charred wood</label>
+									<input type="checkbox" id="nose-aromas-oak-smoke" name="nose-aromas-oak[]"
+										value="smoke">
+									<label for="nose-aromas-oak-smoke">smoke</label>
+									<input type="checkbox" id="nose-aromas-oak-chocolate" name="nose-aromas-oak[]"
+										value="chocolate">
+									<label for="nose-aromas-oak-chocolate">chocolate</label>
+									<input type="checkbox" id="nose-aromas-oak-coffee" name="nose-aromas-oak[]"
+										value="coffee">
+									<label for="nose-aromas-oak-coffee">coffee</label>
+									<input type="checkbox" id="nose-aromas-oak-resinous" name="nose-aromas-oak[]"
+										value="resinous">
+									<label for="nose-aromas-oak-resinous">resinous</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Other</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<input type="text" id="nose-aromas-other-text-secondary" name="nose-aromas-other-text"
+									placeholder="Other">
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="aroma-flavor-section" data-level="tertiary">
+				<div class="aroma-flavor-heading">
+					<h4>Tertiary Aromas</h4>
+					<p>The aromas of maturation</p>
+					<div class="collapsible-trigger">
+						<div class="collapsible-arrow"></div>
+					</div>
+				</div>
+				<div class="aroma-flavor-body">
+					<div class="aroma-flavor-subheadings">
+						<p class="aroma-flavor-subheadings-clusters">Clusters</p>
+						<p class="aroma-flavor-subheadings-descriptors">Descriptors</p>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Deliberate Oxidation</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-deliberateoxidation-almond"
+										name="nose-aromas-deliberateoxidation[]" value="almond">
+									<label for="nose-aromas-deliberateoxidation-almond">almond</label>
+									<input type="checkbox" id="nose-aromas-deliberateoxidation-marzipan"
+										name="nose-aromas-deliberateoxidation[]" value="marzipan">
+									<label for="nose-aromas-deliberateoxidation-marzipan">marzipan</label>
+									<input type="checkbox" id="nose-aromas-deliberateoxidation-hazelnut"
+										name="nose-aromas-deliberateoxidation[]" value="hazelnut">
+									<label for="nose-aromas-deliberateoxidation-hazelnut">hazelnut</label>
+									<input type="checkbox" id="nose-aromas-deliberateoxidation-walnut"
+										name="nose-aromas-deliberateoxidation[]" value="walnut">
+									<label for="nose-aromas-deliberateoxidation-walnut">walnut</label>
+									<input type="checkbox" id="nose-aromas-deliberateoxidation-chocolate"
+										name="nose-aromas-deliberateoxidation[]" value="chocolate">
+									<label for="nose-aromas-deliberateoxidation-chocolate">chocolate</label>
+									<input type="checkbox" id="nose-aromas-deliberateoxidation-coffee"
+										name="nose-aromas-deliberateoxidation[]" value="coffee">
+									<label for="nose-aromas-deliberateoxidation-coffee">coffee</label>
+									<input type="checkbox" id="nose-aromas-deliberateoxidation-toffee"
+										name="nose-aromas-deliberateoxidation[]" value="toffee">
+									<label for="nose-aromas-deliberateoxidation-toffee">toffee</label>
+									<input type="checkbox" id="nose-aromas-deliberateoxidation-caramel"
+										name="nose-aromas-deliberateoxidation[]" value="caramel">
+									<label for="nose-aromas-deliberateoxidation-caramel">caramel</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Fruit Development (white)</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-fruitdevelopmentwhite-driedapricot"
+										name="nose-aromas-fruitdevelopmentwhite[]" value="dried apricot">
+									<label for="nose-aromas-fruitdevelopmentwhite-driedapricot">dried apricot</label>
+									<input type="checkbox" id="nose-aromas-fruitdevelopmentwhite-marmalade"
+										name="nose-aromas-fruitdevelopmentwhite[]" value="marmalade">
+									<label for="nose-aromas-fruitdevelopmentwhite-marmalade">marmalade</label>
+									<input type="checkbox" id="nose-aromas-fruitdevelopmentwhite-driedapple"
+										name="nose-aromas-fruitdevelopmentwhite[]" value="dried apple">
+									<label for="nose-aromas-fruitdevelopmentwhite-driedapple">dried apple</label>
+									<input type="checkbox" id="nose-aromas-fruitdevelopmentwhite-driedbanana"
+										name="nose-aromas-fruitdevelopmentwhite[]" value="dried banana">
+									<label for="nose-aromas-fruitdevelopmentwhite-driedbanana">dried banana</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Fruit Development (red)</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-fruitdevelopmentred-fig"
+										name="nose-aromas-fruitdevelopmentred[]" value="fig">
+									<label for="nose-aromas-fruitdevelopmentred-fig">fig</label>
+									<input type="checkbox" id="nose-aromas-fruitdevelopmentred-prune"
+										name="nose-aromas-fruitdevelopmentred[]" value="prune">
+									<label for="nose-aromas-fruitdevelopmentred-prune">prune</label>
+									<input type="checkbox" id="nose-aromas-fruitdevelopmentred-tar"
+										name="nose-aromas-fruitdevelopmentred[]" value="tar">
+									<label for="nose-aromas-fruitdevelopmentred-tar">tar</label>
+									<input type="checkbox" id="nose-aromas-fruitdevelopmentred-driedblackberry"
+										name="nose-aromas-fruitdevelopmentred[]" value="dried blackberry">
+									<label for="nose-aromas-fruitdevelopmentred-driedblackberry">dried
+										blackberry</label>
+									<input type="checkbox" id="nose-aromas-fruitdevelopmentred-driedcranberry"
+										name="nose-aromas-fruitdevelopmentred[]" value="dried cranberry">
+									<label for="nose-aromas-fruitdevelopmentred-driedcranberry">dried cranberry</label>
+									<input type="checkbox" id="nose-aromas-fruitdevelopmentred-cookedblackberry"
+										name="nose-aromas-fruitdevelopmentred[]" value="cooked blackberry">
+									<label for="nose-aromas-fruitdevelopmentred-cookedblackberry">cooked
+										blackberry</label>
+									<input type="checkbox" id="nose-aromas-fruitdevelopmentred-cookedredplum"
+										name="nose-aromas-fruitdevelopmentred[]" value="cooked red plum">
+									<label for="nose-aromas-fruitdevelopmentred-cookedredplum">cooked red plum</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Bottle Age (white)</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-bottleagewhite-petrol"
+										name="nose-aromas-bottleagewhite[]" value="petrol">
+									<label for="nose-aromas-bottleagewhite-petrol">petrol</label>
+									<input type="checkbox" id="nose-aromas-bottleagewhite-kerosene"
+										name="nose-aromas-bottleagewhite[]" value="kerosene">
+									<label for="nose-aromas-bottleagewhite-kerosene">kerosene</label>
+									<input type="checkbox" id="nose-aromas-bottleagewhite-cinnamon"
+										name="nose-aromas-bottleagewhite[]" value="cinnamon">
+									<label for="nose-aromas-bottleagewhite-cinnamon">cinnamon</label>
+									<input type="checkbox" id="nose-aromas-bottleagewhite-ginger"
+										name="nose-aromas-bottleagewhite[]" value="ginger">
+									<label for="nose-aromas-bottleagewhite-ginger">ginger</label>
+									<input type="checkbox" id="nose-aromas-bottleagewhite-nutmeg"
+										name="nose-aromas-bottleagewhite[]" value="nutmeg">
+									<label for="nose-aromas-bottleagewhite-nutmeg">nutmeg</label>
+									<input type="checkbox" id="nose-aromas-bottleagewhite-toast"
+										name="nose-aromas-bottleagewhite[]" value="toast">
+									<label for="nose-aromas-bottleagewhite-toast">toast</label>
+									<input type="checkbox" id="nose-aromas-bottleagewhite-nutty"
+										name="nose-aromas-bottleagewhite[]" value="nutty">
+									<label for="nose-aromas-bottleagewhite-nutty">fig</label>
+									<input type="checkbox" id="nose-aromas-bottleagewhite-mushroom"
+										name="nose-aromas-bottleagewhite[]" value="mushroom">
+									<label for="nose-aromas-bottleagewhite-mushroom">mushroom</label>
+									<input type="checkbox" id="nose-aromas-bottleagewhite-hay"
+										name="nose-aromas-bottleagewhite[]" value="hay">
+									<label for="nose-aromas-bottleagewhite-hay">hay</label>
+									<input type="checkbox" id="nose-aromas-bottleagewhite-honey"
+										name="nose-aromas-bottleagewhite[]" value="honey">
+									<label for="nose-aromas-bottleagewhite-honey">honey</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Bottle Age (red)</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="nose-aromas-bottleagered-leather"
+										name="nose-aromas-bottleagered[]" value="leather">
+									<label for="nose-aromas-bottleagered-leather">leather</label>
+									<input type="checkbox" id="nose-aromas-bottleagered-forestfloor"
+										name="nose-aromas-bottleagered[]" value="forest floor">
+									<label for="nose-aromas-bottleagered-forestfloor">forest floor</label>
+									<input type="checkbox" id="nose-aromas-bottleagered-earth"
+										name="nose-aromas-bottleagered[]" value="earth">
+									<label for="nose-aromas-bottleagered-earth">earth</label>
+									<input type="checkbox" id="nose-aromas-bottleagered-mushroom"
+										name="nose-aromas-bottleagered[]" value="mushroom">
+									<label for="nose-aromas-bottleagered-mushroom">mushroom</label>
+									<input type="checkbox" id="nose-aromas-bottleagered-game"
+										name="nose-aromas-bottleagered[]" value="game">
+									<label for="nose-aromas-bottleagered-game">game</label>
+									<input type="checkbox" id="nose-aromas-bottleagered-tobacco"
+										name="nose-aromas-bottleagered[]" value="tobacco">
+									<label for="nose-aromas-bottleagered-tobacco">tobacco</label>
+									<input type="checkbox" id="nose-aromas-bottleagered-vegetal"
+										name="nose-aromas-bottleagered[]" value="vegetal">
+									<label for="nose-aromas-bottleagered-vegetal">vegetal</label>
+									<input type="checkbox" id="nose-aromas-bottleagered-wetleaves"
+										name="nose-aromas-bottleagered[]" value="wet leaves">
+									<label for="nose-aromas-bottleagered-wetleaves">wet leaves</label>
+									<input type="checkbox" id="nose-aromas-bottleagered-savoury"
+										name="nose-aromas-bottleagered[]" value="savoury">
+									<label for="nose-aromas-bottleagered-savoury">savoury</label>
+									<input type="checkbox" id="nose-aromas-bottleagered-meaty"
+										name="nose-aromas-bottleagered[]" value="meaty">
+									<label for="nose-aromas-bottleagered-meaty">meaty</label>
+									<input type="checkbox" id="nose-aromas-bottleagered-farmyard"
+										name="nose-aromas-bottleagered[]" value="farm yard">
+									<label for="nose-aromas-bottleagered-farmyard">farm yard</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Other</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<input type="text" id="nose-aromas-other-text-tertiary" name="nose-aromas-other-text"
+									placeholder="Other">
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="control-group-stack">
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Development</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="nose-development-youthful" name="nose-development"
+									value="youthful">
+								<label for="nose-development-youthful">youthful</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="nose-development-developing" name="nose-development"
+									value="developing">
+								<label for="nose-development-developing">developing</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="nose-development-fullydeveloped" name="nose-development"
+									value="fully developed">
+								<label for="nose-development-fullydeveloped">fully developed</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="nose-development-tired" name="nose-development"
+									value="tired/past its best">
+								<label for="nose-development-tired">tired/past its best</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<h2>Palate</h2>
+			<div class="control-group-stack">
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Sweetness</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="palate-sweetness-dry" name="palate-sweetness" value="dry">
+								<label for="palate-sweetness-dry">dry</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-sweetness-offdry" name="palate-sweetness"
+									value="off-dry">
+								<label for="palate-sweetness-offdry">off-dry</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-sweetness-mediumdry" name="palate-sweetness"
+									value="medium-dry">
+								<label for="palate-sweetness-mediumdry">medium-dry</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-sweetness-mediumsweet" name="palate-sweetness"
+									value="medium-sweet">
+								<label for="palate-sweetness-mediumsweet">medium-sweet</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-sweetness-sweet" name="palate-sweetness" value="sweet">
+								<label for="palate-sweetness-sweet">sweet</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-sweetness-lucious" name="palate-sweetness"
+									value="lucious">
+								<label for="palate-sweetness-lucious">lucious</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Acidity</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="palate-acidity-low" name="palate-acidity" value="low">
+								<label for="palate-acidity-low">low</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-acidity-mediumminus" name="palate-acidity"
+									value="medium(-)">
+								<label for="palate-acidity-mediumminus">medium(-)</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-acidity-medium" name="palate-acidity" value="medium">
+								<label for="palate-acidity-medium">medium</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-acidity-mediumplus" name="palate-acidity"
+									value="medium(+)">
+								<label for="palate-acidity-mediumplus">medium(+)</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-acidity-high" name="palate-acidity" value="high">
+								<label for="palate-acidity-high">high</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Tannin</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="palate-tannin-low" name="palate-tannin" value="low">
+								<label for="palate-tannin-low">low</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-tannin-mediumminus" name="palate-tannin"
+									value="medium(-)">
+								<label for="palate-tannin-mediumminus">medium(-)</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-tannin-medium" name="palate-tannin" value="medium">
+								<label for="palate-tannin-medium">medium</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-tannin-mediumplus" name="palate-tannin"
+									value="medium(+)">
+								<label for="palate-tannin-mediumplus">medium(+)</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-tannin-high" name="palate-tannin" value="high">
+								<label for="palate-tannin-high">high</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Alcohol</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="palate-alcohol-low" name="palate-alcohol" value="low">
+								<label for="palate-alcohol-low">low</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-alcohol-medium" name="palate-alcohol" value="medium">
+								<label for="palate-alcohol-medium">medium</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-alcohol-high" name="palate-alcohol" value="high">
+								<label for="palate-alcohol-high">high</label>
+							</div>
+						</div>
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="checkbox" id="palate-alcohol-fortified" name="palate-alcohol-fortified"
+									value="1">
+								<label for="palate-alcohol-fortified">wine is fortified</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Body</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="palate-body-light" name="palate-body" value="light">
+								<label for="palate-body-light">light</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-body-mediumminus" name="palate-body" value="medium(-)">
+								<label for="palate-body-mediumminus">medium(-)</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-body-medium" name="palate-body" value="medium">
+								<label for="palate-body-medium">medium</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-body-mediumplus" name="palate-body" value="medium(+)">
+								<label for="palate-body-mediumplus">medium(+)</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-body-full" name="palate-body" value="full">
+								<label for="palate-body-full">full</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Mousse</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="palate-mousse-delicate" name="palate-mousse" value="delicate">
+								<label for="palate-mousse-delicate">delicate</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-mousse-creamy" name="palate-mousse" value="creamy">
+								<label for="palate-mousse-creamy">creamy</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-mousse-aggressive" name="palate-mousse"
+									value="aggressive">
+								<label for="palate-mousse-aggressive">aggressive</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Flavor Intensity</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="palate-flavorintensity-light" name="palate-flavorintensity"
+									value="light">
+								<label for="palate-flavorintensity-light">light</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-flavorintensity-mediumminus"
+									name="palate-flavorintensity" value="medium(-)">
+								<label for="palate-flavorintensity-mediumminus">medium(-)</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-flavorintensity-medium" name="palate-flavorintensity"
+									value="medium">
+								<label for="palate-flavorintensity-medium">medium</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-flavorintensity-mediumplus" name="palate-flavorintensity"
+									value="medium(+)">
+								<label for="palate-flavorintensity-mediumplus">medium(+)</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-flavorintensity-pronounced" name="palate-flavorintensity"
+									value="pronounced">
+								<label for="palate-flavorintensity-pronounced">pronounced</label>
+							</div>
+						</div>
+					</div>
+					<div class="control-group-divider"></div>
+				</div>
+				<p> </p>
+
+			</div>
+
+			<div class="aroma-flavor-heading">
+				<h3>Flavor Characteristics</h3>
+				<p>Think in terms of primary, secondary and tertiary</p>
+			</div>
+			<div class="aroma-flavor-section" data-level="primary">
+				<div class="aroma-flavor-heading">
+					<h4>Primary Flavors</h4>
+					<p>The flavors of the grape and alcoholic fermentation</p>
+					<button class="copy-btn" onclick="copyFromAroma('primary')">Copy from aroma</button>
+				</div>
+				<div class="aroma-flavor-body">
+					<div class="aroma-flavor-subheadings">
+						<p class="aroma-flavor-subheadings-clusters">Clusters</p>
+						<p class="aroma-flavor-subheadings-descriptors">Descriptors</p>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Floral</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-floral-acacia"
+										name="palate-flavors-floral[]" value="acacia">
+									<label for="palate-flavors-floral-acacia">acacia</label>
+									<input type="checkbox" id="palate-flavors-floral-honeysuckle"
+										name="palate-flavors-floral[]" value="honeysuckle">
+									<label for="palate-flavors-floral-honeysuckle">honeysuckle</label>
+									<input type="checkbox" id="palate-flavors-floral-chamomile"
+										name="palate-flavors-floral[]" value="chamomile">
+									<label for="palate-flavors-floral-chamomile">chamomile</label>
+									<input type="checkbox" id="palate-flavors-floral-elderflower"
+										name="palate-flavors-floral[]" value="elderflower">
+									<label for="palate-flavors-floral-elderflower">elderflower</label>
+									<input type="checkbox" id="palate-flavors-floral-geranium"
+										name="palate-flavors-floral[]" value="geranium">
+									<label for="palate-flavors-floral-geranium">geranium</label>
+									<input type="checkbox" id="palate-flavors-floral-blossom"
+										name="palate-flavors-floral[]" value="blossom">
+									<label for="palate-flavors-floral-blossom">blossom</label>
+									<input type="checkbox" id="palate-flavors-floral-rose"
+										name="palate-flavors-floral[]" value="rose">
+									<label for="palate-flavors-floral-rose">rose</label>
+									<input type="checkbox" id="palate-flavors-floral-violet"
+										name="palate-flavors-floral[]" value="violet">
+									<label for="palate-flavors-floral-violet">violet</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Green Fruit</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-greenfruit-apple"
+										name="palate-flavors-greenfruit[]" value="apple">
+									<label for="palate-flavors-greenfruit-apple">apple</label>
+									<input type="checkbox" id="palate-flavors-greenfruit-gooseberry"
+										name="palate-flavors-greenfruit[]" value="gooseberry">
+									<label for="palate-flavors-greenfruit-gooseberry">gooseberry</label>
+									<input type="checkbox" id="palate-flavors-greenfruit-pear"
+										name="palate-flavors-greenfruit[]" value="pear">
+									<label for="palate-flavors-greenfruit-pear">pear</label>
+									<input type="checkbox" id="palate-flavors-greenfruit-peardrop"
+										name="palate-flavors-greenfruit[]" value="pear drop">
+									<label for="palate-flavors-greenfruit-peardrop">pear drop</label>
+									<input type="checkbox" id="palate-flavors-greenfruit-quince"
+										name="palate-flavors-greenfruit[]" value="quince">
+									<label for="palate-flavors-greenfruit-quince">quince</label>
+									<input type="checkbox" id="palate-flavors-greenfruit-grape"
+										name="palate-flavors-greenfruit[]" value="grape">
+									<label for="palate-flavors-greenfruit-grape">grape</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Citrus Fruit</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-citrusfruit-grapefruit"
+										name="palate-flavors-citrusfruit[]" value="grapefruit">
+									<label for="palate-flavors-citrusfruit-grapefruit">grapefruit</label>
+									<input type="checkbox" id="palate-flavors-citrusfruit-lemon"
+										name="palate-flavors-citrusfruit[]" value="lemon">
+									<label for="palate-flavors-citrusfruit-lemon">lemon</label>
+									<input type="checkbox" id="palate-flavors-citrusfruit-lime"
+										name="palate-flavors-citrusfruit[]" value="lime">
+									<label for="palate-flavors-citrusfruit-lime">lime</label>
+									<input type="checkbox" id="palate-flavors-citrusfruit-orangepeel"
+										name="palate-flavors-citrusfruit[]" value="orange peel">
+									<label for="palate-flavors-citrusfruit-orangepeel">orange peel</label>
+									<input type="checkbox" id="palate-flavors-citrusfruit-lemonpeel"
+										name="palate-flavors-citrusfruit[]" value="lemon peel">
+									<label for="palate-flavors-citrusfruit-lemonpeel">lemon peel</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Stone Fruit</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-stonefruit-peach"
+										name="palate-flavors-stonefruit[]" value="peach">
+									<label for="palate-flavors-stonefruit-peach">peach</label>
+									<input type="checkbox" id="palate-flavors-stonefruit-apricot"
+										name="palate-flavors-stonefruit[]" value="apricot">
+									<label for="palate-flavors-stonefruit-apricot">apricot</label>
+									<input type="checkbox" id="palate-flavors-stonefruit-nectarine"
+										name="palate-flavors-stonefruit[]" value="nectarine">
+									<label for="palate-flavors-stonefruit-nectarine">nectarine</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Tropical Fruit</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-tropicalfruit-banana"
+										name="palate-flavors-tropicalfruit[]" value="banana">
+									<label for="palate-flavors-tropicalfruit-banana">banana</label>
+									<input type="checkbox" id="palate-flavors-tropicalfruit-lychee"
+										name="palate-flavors-tropicalfruit[]" value="lychee">
+									<label for="palate-flavors-tropicalfruit-lychee">lychee</label>
+									<input type="checkbox" id="palate-flavors-tropicalfruit-mango"
+										name="palate-flavors-tropicalfruit[]" value="mango">
+									<label for="palate-flavors-tropicalfruit-mango">mango</label>
+									<input type="checkbox" id="palate-flavors-tropicalfruit-melon"
+										name="palate-flavors-tropicalfruit[]" value="melon">
+									<label for="palate-flavors-tropicalfruit-melon">melon</label>
+									<input type="checkbox" id="palate-flavors-tropicalfruit-passionfruit"
+										name="palate-flavors-tropicalfruit[]" value="passion fruit">
+									<label for="palate-flavors-tropicalfruit-passionfruit">passion fruit</label>
+									<input type="checkbox" id="palate-flavors-tropicalfruit-pineapple"
+										name="palate-flavors-tropicalfruit[]" value="pineapple">
+									<label for="palate-flavors-tropicalfruit-pineapple">pineapple</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Red Fruit</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-redfruit-redcurrant"
+										name="palate-flavors-redfruit[]" value="redcurrant">
+									<label for="palate-flavors-redfruit-redcurrant">redcurrant</label>
+									<input type="checkbox" id="palate-flavors-redfruit-cranberry"
+										name="palate-flavors-redfruit[]" value="cranberry">
+									<label for="palate-flavors-redfruit-cranberry">cranberry</label>
+									<input type="checkbox" id="palate-flavors-redfruit-raspberry"
+										name="palate-flavors-redfruit[]" value="raspberry">
+									<label for="palate-flavors-redfruit-raspberry">raspberry</label>
+									<input type="checkbox" id="palate-flavors-redfruit-strawberry"
+										name="palate-flavors-redfruit[]" value="strawberry">
+									<label for="palate-flavors-redfruit-strawberry">strawberry</label>
+									<input type="checkbox" id="palate-flavors-redfruit-redcherry"
+										name="palate-flavors-redfruit[]" value="red cherry">
+									<label for="palate-flavors-redfruit-redcherry">red cherry</label>
+									<input type="checkbox" id="palate-flavors-redfruit-redplum"
+										name="palate-flavors-redfruit[]" value="red plum">
+									<label for="palate-flavors-redfruit-redplum">red plum</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Black Fruit</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-blackfruit-blackcurrant"
+										name="palate-flavors-blackfruit[]" value="blackcurrant">
+									<label for="palate-flavors-blackfruit-blackcurrant">blackcurrant</label>
+									<input type="checkbox" id="palate-flavors-blackfruit-blackberry"
+										name="palate-flavors-blackfruit[]" value="blackberry">
+									<label for="palate-flavors-blackfruit-blackberry">blackberry</label>
+									<input type="checkbox" id="palate-flavors-blackfruit-bramble"
+										name="palate-flavors-blackfruit[]" value="bramble">
+									<label for="palate-flavors-blackfruit-bramble">bramble</label>
+									<input type="checkbox" id="palate-flavors-blackfruit-blueberry"
+										name="palate-flavors-blackfruit[]" value="blueberry">
+									<label for="palate-flavors-blackfruit-blueberry">blueberry</label>
+									<input type="checkbox" id="palate-flavors-blackfruit-blackcherry"
+										name="palate-flavors-blackfruit[]" value="black cherry">
+									<label for="palate-flavors-blackfruit-blackcherry">black cherry</label>
+									<input type="checkbox" id="palate-flavors-blackfruit-blackplum"
+										name="palate-flavors-blackfruit[]" value="black plum">
+									<label for="palate-flavors-blackfruit-blackplum">black plum</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Dried/Cooked Fruit</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-driedcookedfruit-fig"
+										name="palate-flavors-driedcookedfruit[]" value="fig">
+									<label for="palate-flavors-driedcookedfruit-fig">fig</label>
+									<input type="checkbox" id="palate-flavors-driedcookedfruit-prune"
+										name="palate-flavors-driedcookedfruit[]" value="prune">
+									<label for="palate-flavors-driedcookedfruit-prune">prune</label>
+									<input type="checkbox" id="palate-flavors-driedcookedfruit-raisin"
+										name="palate-flavors-driedcookedfruit[]" value="raisin">
+									<label for="palate-flavors-driedcookedfruit-raisin">raisin</label>
+									<input type="checkbox" id="palate-flavors-driedcookedfruit-sultana"
+										name="palate-flavors-driedcookedfruit[]" value="sultana">
+									<label for="palate-flavors-driedcookedfruit-sultana">sultana</label>
+									<input type="checkbox" id="palate-flavors-driedcookedfruit-kirsch"
+										name="palate-flavors-driedcookedfruit[]" value="kirsch">
+									<label for="palate-flavors-driedcookedfruit-kirsch">kirsch</label>
+									<input type="checkbox" id="palate-flavors-driedcookedfruit-jamminess"
+										name="palate-flavors-driedcookedfruit[]" value="jamminess">
+									<label for="palate-flavors-driedcookedfruit-jamminess">jamminess</label>
+									<input type="checkbox" id="palate-flavors-driedcookedfruit-bakedstewedfruits"
+										name="palate-flavors-driedcookedfruit[]" value="bakedstewedfruits">
+									<label for="palate-flavors-driedcookedfruit-bakedstewedfruits">baked/stewed
+										fruits</label>
+									<input type="checkbox" id="palate-flavors-driedcookedfruit-preservedfruits"
+										name="palate-flavors-driedcookedfruit[]" value="preserved fruits">
+									<label for="palate-flavors-driedcookedfruit-preservedfruits">preserved
+										fruits</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Herbaceous</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-herbaceous-greenbellpeppercapsicium"
+										name="palate-flavors-herbaceous[]" value="green bell pepper (capsicium)">
+									<label for="palate-flavors-herbaceous-greenbellpeppercapsicium">green bell pepper
+										(capsicium)</label>
+									<input type="checkbox" id="palate-flavors-herbaceous-grass"
+										name="palate-flavors-herbaceous[]" value="grass">
+									<label for="palate-flavors-herbaceous-grass">grass</label>
+									<input type="checkbox" id="palate-flavors-herbaceous-tomatoleaf"
+										name="palate-flavors-herbaceous[]" value="tomato leaf">
+									<label for="palate-flavors-herbaceous-tomatoleaf">tomato leaf</label>
+									<input type="checkbox" id="palate-flavors-herbaceous-asparagus"
+										name="palate-flavors-herbaceous[]" value="asparagus">
+									<label for="palate-flavors-herbaceous-asparagus">asparagus</label>
+									<input type="checkbox" id="palate-flavors-herbaceous-blackcurrantleaf"
+										name="palate-flavors-herbaceous[]" value="blackcurrant leaf">
+									<label for="palate-flavors-herbaceous-blackcurrantleaf">blackcurrant leaf</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Herbal</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-herbal-eucalyptus"
+										name="palate-flavors-herbal[]" value="eucalyptus">
+									<label for="palate-flavors-herbal-eucalyptus">eucalyptus</label>
+									<input type="checkbox" id="palate-flavors-herbal-mint"
+										name="palate-flavors-herbal[]" value="mint">
+									<label for="palate-flavors-herbal-mint">mint</label>
+									<input type="checkbox" id="palate-flavors-herbal-medicinal"
+										name="palate-flavors-herbal[]" value="medicinal">
+									<label for="palate-flavors-herbal-medicinal">medicinal</label>
+									<input type="checkbox" id="palate-flavors-herbal-lavender"
+										name="palate-flavors-herbal[]" value="lavender">
+									<label for="palate-flavors-herbal-lavender">lavender</label>
+									<input type="checkbox" id="palate-flavors-herbal-fennel"
+										name="palate-flavors-herbal[]" value="fennel">
+									<label for="palate-flavors-herbal-fennel">fennel</label>
+									<input type="checkbox" id="palate-flavors-herbal-dill"
+										name="palate-flavors-herbal[]" value="dill">
+									<label for="palate-flavors-herbal-dill">dill</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Pungent Spice</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-pungentspice-blackwhitepepper"
+										name="palate-flavors-pungentspice[]" value="black/white pepper">
+									<label for="palate-flavors-pungentspice-blackwhitepepper">black/white pepper</label>
+									<input type="checkbox" id="palate-flavors-pungentspice-liquorice"
+										name="palate-flavors-pungentspice[]" value="liquorice">
+									<label for="palate-flavors-pungentspice-liquorice">liquorice</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Other</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-other-simple"
+										name="palate-flavors-other-simple" value="simple">
+									<label for="palate-flavors-other-simple">simple</label>
+									<input type="checkbox" id="palate-flavors-other-flint" name="palate-flavors-other[]"
+										value="flint">
+									<label for="palate-flavors-other-flint">flint</label>
+									<input type="checkbox" id="palate-flavors-other-wetstones"
+										name="palate-flavors-other[]" value="wet stones">
+									<label for="palate-flavors-other-wetstones">wet stones</label>
+									<input type="checkbox" id="palate-flavors-other-wetwool"
+										name="palate-flavors-other[]" value="wet wool">
+									<label for="palate-flavors-other-wetwool">wet wool</label>
+									<input type="text" id="palate-flavors-other-text-primary"
+										name="palate-flavors-other-text" placeholder="Other">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="aroma-flavor-section" data-level="secondary">
+				<div class="aroma-flavor-heading">
+					<h4>Secondary Flavors</h4>
+					<p>The flavors of post-fermentation winemaking</p>
+					<button class="copy-btn" onclick="copyFromAroma('secondary')">Copy from aroma</button>
+					<div class="collapsible-trigger">
+						<div class="collapsible-arrow"></div>
+					</div>
+				</div>
+				<div class="aroma-flavor-body">
+					<div class="aroma-flavor-subheadings">
+						<p class="aroma-flavor-subheadings-clusters">Clusters</p>
+						<p class="aroma-flavor-subheadings-descriptors">Descriptors</p>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Yeast (<em>lees, autolysis</em>)</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-yeast-biscuit"
+										name="palate-flavors-yeast[]" value="biscuit">
+									<label for="palate-flavors-yeast-biscuit">biscuit</label>
+									<input type="checkbox" id="palate-flavors-yeast-bread" name="palate-flavors-yeast[]"
+										value="bread">
+									<label for="palate-flavors-yeast-bread">bread</label>
+									<input type="checkbox" id="palate-flavors-yeast-toast" name="palate-flavors-yeast[]"
+										value="toast">
+									<label for="palate-flavors-yeast-toast">toast</label>
+									<input type="checkbox" id="palate-flavors-yeast-pastry"
+										name="palate-flavors-yeast[]" value="pastry">
+									<label for="palate-flavors-yeast-pastry">pastry</label>
+									<input type="checkbox" id="palate-flavors-yeast-brioche"
+										name="palate-flavors-yeast[]" value="brioche">
+									<label for="palate-flavors-yeast-brioche">brioche</label>
+									<input type="checkbox" id="palate-flavors-yeast-breaddough"
+										name="palate-flavors-yeast[]" value="bread dough">
+									<label for="palate-flavors-yeast-breaddough">bread dough</label>
+									<input type="checkbox" id="palate-flavors-yeast-cheese"
+										name="palate-flavors-yeast[]" value="cheese">
+									<label for="palate-flavors-yeast-cheese">cheese</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Malolactic Conversion</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-malolacticconversion-butter"
+										name="palate-flavors-malolacticconversion[]" value="butter">
+									<label for="palate-flavors-malolacticconversion-butter">butter</label>
+									<input type="checkbox" id="palate-flavors-malolacticconversion-cheese"
+										name="palate-flavors-malolacticconversion[]" value="cheese">
+									<label for="palate-flavors-malolacticconversion-cheese">cheese</label>
+									<input type="checkbox" id="palate-flavors-malolacticconversion-cream"
+										name="palate-flavors-malolacticconversion[]" value="cream">
+									<label for="palate-flavors-malolacticconversion-cream">cream</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Oak</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-oak-vanilla" name="palate-flavors-oak[]"
+										value="vanilla">
+									<label for="palate-flavors-oak-vanilla">vanilla</label>
+									<input type="checkbox" id="palate-flavors-oak-cloves" name="palate-flavors-oak[]"
+										value="cloves">
+									<label for="palate-flavors-oak-cloves">cloves</label>
+									<input type="checkbox" id="palate-flavors-oak-nutmeg" name="palate-flavors-oak[]"
+										value="nutmeg">
+									<label for="palate-flavors-oak-nutmeg">nutmeg</label>
+									<input type="checkbox" id="palate-flavors-oak-coconut" name="palate-flavors-oak[]"
+										value="coconut">
+									<label for="palate-flavors-oak-coconut">coconut</label>
+									<input type="checkbox" id="palate-flavors-oak-butterscotch"
+										name="palate-flavors-oak[]" value="butterscotch">
+									<label for="palate-flavors-oak-butterscotch">butterscotch</label>
+									<input type="checkbox" id="palate-flavors-oak-toast" name="palate-flavors-oak[]"
+										value="toast">
+									<label for="palate-flavors-oak-toast">toast</label>
+									<input type="checkbox" id="palate-flavors-oak-cedar" name="palate-flavors-oak[]"
+										value="cedar">
+									<label for="palate-flavors-oak-cedar">cedar</label>
+									<input type="checkbox" id="palate-flavors-oak-charredwood"
+										name="palate-flavors-oak[]" value="charred wood">
+									<label for="palate-flavors-oak-charredwood">charred wood</label>
+									<input type="checkbox" id="palate-flavors-oak-smoke" name="palate-flavors-oak[]"
+										value="smoke">
+									<label for="palate-flavors-oak-smoke">smoke</label>
+									<input type="checkbox" id="palate-flavors-oak-chocolate" name="palate-flavors-oak[]"
+										value="chocolate">
+									<label for="palate-flavors-oak-chocolate">chocolate</label>
+									<input type="checkbox" id="palate-flavors-oak-coffee" name="palate-flavors-oak[]"
+										value="coffee">
+									<label for="palate-flavors-oak-coffee">coffee</label>
+									<input type="checkbox" id="palate-flavors-oak-resinous" name="palate-flavors-oak[]"
+										value="resinous">
+									<label for="palate-flavors-oak-resinous">resinous</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Other</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<input type="text" id=palate-flavors-other-text-secondary"
+									name="palate-flavors-other-text" placeholder="Other">
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="aroma-flavor-section" data-level="tertiary">
+				<div class="aroma-flavor-heading">
+					<h4>Tertiary Flavors</h4>
+					<p>The flavors of maturation</p>
+					<button class="copy-btn" onclick="copyFromAroma('tertiary')">Copy from aroma</button>
+					<div class="collapsible-trigger">
+						<div class="collapsible-arrow"></div>
+					</div>
+				</div>
+				<div class="aroma-flavor-body">
+					<div class="aroma-flavor-subheadings">
+						<p class="aroma-flavor-subheadings-clusters">Clusters</p>
+						<p class="aroma-flavor-subheadings-descriptors">Descriptors</p>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Deliberate Oxidation</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-deliberateoxidation-almond"
+										name="palate-flavors-deliberateoxidation[]" value="almond">
+									<label for="palate-flavors-deliberateoxidation-almond">almond</label>
+									<input type="checkbox" id="palate-flavors-deliberateoxidation-marzipan"
+										name="palate-flavors-deliberateoxidation[]" value="marzipan">
+									<label for="palate-flavors-deliberateoxidation-marzipan">marzipan</label>
+									<input type="checkbox" id="palate-flavors-deliberateoxidation-hazelnut"
+										name="palate-flavors-deliberateoxidation[]" value="hazelnut">
+									<label for="palate-flavors-deliberateoxidation-hazelnut">hazelnut</label>
+									<input type="checkbox" id="palate-flavors-deliberateoxidation-walnut"
+										name="palate-flavors-deliberateoxidation[]" value="walnut">
+									<label for="palate-flavors-deliberateoxidation-walnut">walnut</label>
+									<input type="checkbox" id="palate-flavors-deliberateoxidation-chocolate"
+										name="palate-flavors-deliberateoxidation[]" value="chocolate">
+									<label for="palate-flavors-deliberateoxidation-chocolate">chocolate</label>
+									<input type="checkbox" id="palate-flavors-deliberateoxidation-coffee"
+										name="palate-flavors-deliberateoxidation[]" value="coffee">
+									<label for="palate-flavors-deliberateoxidation-coffee">coffee</label>
+									<input type="checkbox" id="palate-flavors-deliberateoxidation-toffee"
+										name="palate-flavors-deliberateoxidation[]" value="toffee">
+									<label for="palate-flavors-deliberateoxidation-toffee">toffee</label>
+									<input type="checkbox" id="palate-flavors-deliberateoxidation-caramel"
+										name="palate-flavors-deliberateoxidation[]" value="caramel">
+									<label for="palate-flavors-deliberateoxidation-caramel">caramel</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Fruit Development (white)</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-fruitdevelopmentwhite-driedapricot"
+										name="palate-flavors-fruitdevelopmentwhite[]" value="dried apricot">
+									<label for="palate-flavors-fruitdevelopmentwhite-driedapricot">dried apricot</label>
+									<input type="checkbox" id="palate-flavors-fruitdevelopmentwhite-marmalade"
+										name="palate-flavors-fruitdevelopmentwhite[]" value="marmalade">
+									<label for="palate-flavors-fruitdevelopmentwhite-marmalade">marmalade</label>
+									<input type="checkbox" id="palate-flavors-fruitdevelopmentwhite-driedapple"
+										name="palate-flavors-fruitdevelopmentwhite[]" value="dried apple">
+									<label for="palate-flavors-fruitdevelopmentwhite-driedapple">dried apple</label>
+									<input type="checkbox" id="palate-flavors-fruitdevelopmentwhite-driedbanana"
+										name="palate-flavors-fruitdevelopmentwhite[]" value="dried banana">
+									<label for="palate-flavors-fruitdevelopmentwhite-driedbanana">dried banana</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Fruit Development (red)</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-fruitdevelopmentred-fig"
+										name="palate-flavors-fruitdevelopmentred[]" value="fig">
+									<label for="palate-flavors-fruitdevelopmentred-fig">fig</label>
+									<input type="checkbox" id="palate-flavors-fruitdevelopmentred-prune"
+										name="palate-flavors-fruitdevelopmentred[]" value="prune">
+									<label for="palate-flavors-fruitdevelopmentred-prune">prune</label>
+									<input type="checkbox" id="palate-flavors-fruitdevelopmentred-tar"
+										name="palate-flavors-fruitdevelopmentred[]" value="tar">
+									<label for="palate-flavors-fruitdevelopmentred-tar">tar</label>
+									<input type="checkbox" id="palate-flavors-fruitdevelopmentred-driedblackberry"
+										name="palate-flavors-fruitdevelopmentred[]" value="dried blackberry">
+									<label for="palate-flavors-fruitdevelopmentred-driedblackberry">dried
+										blackberry</label>
+									<input type="checkbox" id="palate-flavors-fruitdevelopmentred-driedcranberry"
+										name="palate-flavors-fruitdevelopmentred[]" value="dried cranberry">
+									<label for="palate-flavors-fruitdevelopmentred-driedcranberry">dried
+										cranberry</label>
+									<input type="checkbox" id="palate-flavors-fruitdevelopmentred-cookedblackberry"
+										name="palate-flavors-fruitdevelopmentred[]" value="cooked blackberry">
+									<label for="palate-flavors-fruitdevelopmentred-cookedblackberry">cooked
+										blackberry</label>
+									<input type="checkbox" id="palate-flavors-fruitdevelopmentred-cookedredplum"
+										name="palate-flavors-fruitdevelopmentred[]" value="cooked red plum">
+									<label for="palate-flavors-fruitdevelopmentred-cookedredplum">cooked red
+										plum</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Bottle Age (white)</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-bottleagewhite-petrol"
+										name="palate-flavors-bottleagewhite[]" value="petrol">
+									<label for="palate-flavors-bottleagewhite-petrol">petrol</label>
+									<input type="checkbox" id="palate-flavors-bottleagewhite-kerosene"
+										name="palate-flavors-bottleagewhite[]" value="kerosene">
+									<label for="palate-flavors-bottleagewhite-kerosene">kerosene</label>
+									<input type="checkbox" id="palate-flavors-bottleagewhite-cinnamon"
+										name="palate-flavors-bottleagewhite[]" value="cinnamon">
+									<label for="palate-flavors-bottleagewhite-cinnamon">cinnamon</label>
+									<input type="checkbox" id="palate-flavors-bottleagewhite-ginger"
+										name="palate-flavors-bottleagewhite[]" value="ginger">
+									<label for="palate-flavors-bottleagewhite-ginger">ginger</label>
+									<input type="checkbox" id="palate-flavors-bottleagewhite-nutmeg"
+										name="palate-flavors-bottleagewhite[]" value="nutmeg">
+									<label for="palate-flavors-bottleagewhite-nutmeg">nutmeg</label>
+									<input type="checkbox" id="palate-flavors-bottleagewhite-toast"
+										name="palate-flavors-bottleagewhite[]" value="toast">
+									<label for="palate-flavors-bottleagewhite-toast">toast</label>
+									<input type="checkbox" id="palate-flavors-bottleagewhite-nutty"
+										name="palate-flavors-bottleagewhite[]" value="nutty">
+									<label for="palate-flavors-bottleagewhite-nutty">fig</label>
+									<input type="checkbox" id="palate-flavors-bottleagewhite-mushroom"
+										name="palate-flavors-bottleagewhite[]" value="mushroom">
+									<label for="palate-flavors-bottleagewhite-mushroom">mushroom</label>
+									<input type="checkbox" id="palate-flavors-bottleagewhite-hay"
+										name="palate-flavors-bottleagewhite[]" value="hay">
+									<label for="palate-flavors-bottleagewhite-hay">hay</label>
+									<input type="checkbox" id="palate-flavors-bottleagewhite-honey"
+										name="palate-flavors-bottleagewhite[]" value="honey">
+									<label for="palate-flavors-bottleagewhite-honey">honey</label>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Bottle Age (red)</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<div class="control-group-body-grouping-body">
+									<input type="checkbox" id="palate-flavors-bottleagered-leather"
+										name="palate-flavors-bottleagered[]" value="leather">
+									<label for="palate-flavors-bottleagered-leather">leather</label>
+									<input type="checkbox" id="palate-flavors-bottleagered-forestfloor"
+										name="palate-flavors-bottleagered[]" value="forest floor">
+									<label for="palate-flavors-bottleagered-forestfloor">forest floor</label>
+									<input type="checkbox" id="palate-flavors-bottleagered-earth"
+										name="palate-flavors-bottleagered[]" value="earth">
+									<label for="palate-flavors-bottleagered-earth">earth</label>
+									<input type="checkbox" id="palate-flavors-bottleagered-mushroom"
+										name="palate-flavors-bottleagered[]" value="mushroom">
+									<label for="palate-flavors-bottleagered-mushroom">mushroom</label>
+									<input type="checkbox" id="palate-flavors-bottleagered-game"
+										name="palate-flavors-bottleagered[]" value="game">
+									<label for="palate-flavors-bottleagered-game">game</label>
+									<input type="checkbox" id="palate-flavors-bottleagered-tobacco"
+										name="palate-flavors-bottleagered[]" value="tobacco">
+									<label for="palate-flavors-bottleagered-tobacco">tobacco</label>
+									<input type="checkbox" id="palate-flavors-bottleagered-vegetal"
+										name="palate-flavors-bottleagered[]" value="vegetal">
+									<label for="palate-flavors-bottleagered-vegetal">vegetal</label>
+									<input type="checkbox" id="palate-flavors-bottleagered-wetleaves"
+										name="palate-flavors-bottleagered[]" value="wet leaves">
+									<label for="palate-flavors-bottleagered-wetleaves">wet leaves</label>
+									<input type="checkbox" id="palate-flavors-bottleagered-savoury"
+										name="palate-flavors-bottleagered[]" value="savoury">
+									<label for="palate-flavors-bottleagered-savoury">savoury</label>
+									<input type="checkbox" id="palate-flavors-bottleagered-meaty"
+										name="palate-flavors-bottleagered[]" value="meaty">
+									<label for="palate-flavors-bottleagered-meaty">meaty</label>
+									<input type="checkbox" id="palate-flavors-bottleagered-farmyard"
+										name="palate-flavors-bottleagered[]" value="farm yard">
+									<label for="palate-flavors-bottleagered-farmyard">farm yard</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="control-group">
+						<div class="control-group-label">
+							<p>Other</p>
+						</div>
+						<div class="control-group-body">
+							<div class="control-group-body-grouping">
+								<input type="text" id="palate-flavors-other-text-tertiary"
+									name="palate-flavors-other-text" placeholder="Other">
+							</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			<div class="control-group-stack">
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Finish</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="palate-finish-short" name="palate-finish" value="short">
+								<label for="palate-finish-short">short</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-finish-mediumminus" name="palate-finish"
+									value="medium(-)">
+								<label for="palate-finish-mediumminus">medium(-)</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-finish-medium" name="palate-finish" value="medium">
+								<label for="palate-finish-medium">medium</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-finish-mediumplus" name="palate-finish"
+									value="medium(+)">
+								<label for="palate-finish-mediumplus">medium(+)</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="palate-finish-long" name="palate-finish" value="long">
+								<label for="palate-finish-long">long</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section>
+			<h2>Conclusions</h2>
+			<div class="control-group-stack">
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Quality Level</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="conclusions-qualitylevel-faulty" name="conclusions-qualitylevel"
+									value="faulty">
+								<label for="conclusions-qualitylevel-faulty">faulty</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="conclusions-qualitylevel-poor" name="conclusions-qualitylevel"
+									value="poor">
+								<label for="conclusions-qualitylevel-poor">poor</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="conclusions-qualitylevel-acceptable"
+									name="conclusions-qualitylevel" value="acceptable">
+								<label for="conclusions-qualitylevel-acceptable">acceptable</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="conclusions-qualitylevel-good" name="conclusions-qualitylevel"
+									value="good">
+								<label for="conclusions-qualitylevel-good">good</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="conclusions-qualitylevel-verygood"
+									name="conclusions-qualitylevel" value="very good">
+								<label for="conclusions-qualitylevel-verygood">very good</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="conclusions-qualitylevel-outstanding"
+									name="conclusions-qualitylevel" value="outstanding">
+								<label for="conclusions-qualitylevel-outstanding">outstanding</label>
+							</div>
+						</div>
+
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="checkbox" id="conclusions-simple" name="conclusions-simple" value="1">
+								<label for="conclusions-simple">wine is simple</label>
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+				<div class="control-group" id="conclusions-readiness">
+					<div class="control-group-label">
+						<p>Level of Readiness for&nbsp;Drinking / Potential&nbsp;for&nbsp;Ageing</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<div class="control-group-body-grouping-body">
+								<input type="radio" id="conclusions-readiness-tooyoung" name="conclusions-readiness"
+									value="too young">
+								<label for="conclusions-readiness-tooyoung">too young</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="conclusions-readiness-canage" name="conclusions-readiness"
+									value="can drink now, but has potential for ageing">
+								<label for="conclusions-readiness-canage">can drink now, but&nbsp;has potential
+									for&nbsp;ageing</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="conclusions-readiness-drinknow" name="conclusions-readiness"
+									value="drink now: not suitable for ageing or further ageing">
+								<label for="conclusions-readiness-drinknow">drink now: not suitable for ageing
+									or&nbsp;further&nbsp;ageing</label>
+								<span class="radio-separator">–</span>
+								<input type="radio" id="conclusions-readiness-tooold" name="conclusions-readiness"
+									value="too old">
+								<label for="conclusions-readiness-tooold">too old</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+
+		<section>
+			<h2>Blind Deduction</h2>
+			<div class="control-group-stack">
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Tasting Sample No.</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<input type="text" id="tasting-sample-number" name="tasting-sample-number"
+								placeholder="e.g. 1 or A01">
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Grape Variety(s)</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<input type="text" id="guess-grape" name="guess-grape"
+								placeholder="e.g. Chardonnay / Pinot Noir">
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Country</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<input type="text" id="guess-country" name="guess-country" placeholder="e.g. France, Italy">
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Region</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<input type="text" id="guess-region" name="guess-region"
+								placeholder="e.g. Burgundy, Barolo">
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Producer / Winery</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<input type="text" id="guess-winery" name="guess-winery"
+								placeholder="e.g. Domaine de la Romanée-Conti, Giacomo Conterno Monfortino">
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Climate / Geographical</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<input type="text" id="guess-climate" name="guess-climate"
+								placeholder="e.g. Cool, Moderate, Hot / Continental, Maritime, Mediterranean, High Desert">
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Price Range</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<input type="text" id="guess-price" name="guess-price" placeholder="e.g. NZD, USD">
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</section>
+
+
+
+		<section>
+			<h2>Wine Identity</h2>
+			<div class="control-group-stack">
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Vintage</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<input type="text" id="identity-vintage" name="identity-vintage" placeholder="e.g. 2019">
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Grape Variety(s)</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<input type="text" id="identity-grape" name="identity-grape"
+								placeholder="Actual Grape Variety(s)">
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Country</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<input type="text" id="identity-country" name="identity-country"
+								placeholder="Actual Country">
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Region</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<input type="text" id="identity-region" name="identity-region" placeholder="Actual Region">
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Producer / Winery</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<input type="text" id="identity-winery" name="identity-winery"
+								placeholder="Actual Producer / Winery">
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Climate / Geographical</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<input type="text" id="identity-climate" name="identity-climate"
+								placeholder="Actual Climate / Geographical">
+						</div>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<div class="control-group-label">
+						<p>Price</p>
+					</div>
+					<div class="control-group-body">
+						<div class="control-group-body-grouping">
+							<input type="text" id="identity-price" name="identity-price" placeholder="e.g. NZD, USD">
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</section>
+
+
+		<button type="button" id="generateButton">Export</button>
+	</form>
+
+
+	<div style="height: 1px;"></div>
+
+
+	<div id="footer">
+		<p>This website is an independent learning project and has no official connection with the <a
+				href="https://www.wsetglobal.com/">Wine &amp; Spirit Education Trust</a>.
+			<br>
+
+			"WSET" and "Systematic
+			Approach to Tasting" are trademarks of the Wine &amp; Spirit Education Trust.
+		</p>
+	</div>
+
+
+	<div style="height: 60px;"></div>
+
+
+	<div class="site-qr">
+		<button class="zoom-btn" onclick="showQrModal()">Zoom QR Code</button>
+		<img src="site_url_qrc.jpg" alt="Site QR code" id="mainQr" />
+		<span class="qr-caption">Site Link</span>
+	</div>
+
+
+
+	<div style="height: 20px;"></div>
+
+	<div id="resultModalBackdrop" class="result-modal-backdrop" hidden>
+		<div class="result-modal" role="dialog" aria-modal="true" aria-labelledby="resultModalTitle">
+			<h1 id="resultModalTitle">WSET Level 3 Tasting Notes</h1>
+			<p class="result-modal-meta" id="resultModalTimestamp"></p>
+			<div id="resultSectionsContainer"></div>
+			<div class="result-modal-actions">
+				<button type="button" id="exportJpgButton">Export JPG</button>
+				<button type="button" id="exportCsvButton">Export CSV</button>
+				<button type="button" id="exportSummaryButton">Export Summary</button>
+				<div class="spacer"></div>
+				<button type="button" id="closeResultModalButton" class="close-button">Close</button>
+
+			</div>
+		</div>
+	</div>
+
+	<div id="summaryModalBackdrop" class="summary-modal-backdrop" hidden>
+		<div class="summary-modal" role="dialog" aria-modal="true" aria-labelledby="summaryModalTitle">
+			<h2 id="summaryModalTitle">Summary</h2>
+			<div id="summaryContent" class="summary-content"></div>
+			<div class="summary-actions">
+				<button type="button" id="copySummaryButton">Copy</button>
+				<div class="spacer"></div>
+				<button type="button" id="closeSummaryButton" class="close-button">Close</button>
+			</div>
+		</div>
+	</div>
+
+
+	<script>
+		// ===== Result Modal Logic =====
+		const generateButton = document.getElementById('generateButton');
+		const modalBackdrop = document.getElementById('resultModalBackdrop');
+		const modalSectionsContainer = document.getElementById('resultSectionsContainer');
+		const modalTimestamp = document.getElementById('resultModalTimestamp');
+		const closeModalButton = document.getElementById('closeResultModalButton');
+		const exportJpgButton = document.getElementById('exportJpgButton');
+		const exportCsvButton = document.getElementById('exportCsvButton');
+		const exportSummaryButton = document.getElementById('exportSummaryButton');
+		const summaryModalBackdrop = document.getElementById('summaryModalBackdrop');
+		const summaryContent = document.getElementById('summaryContent');
+		const copySummaryButton = document.getElementById('copySummaryButton');
+		const closeSummaryButton = document.getElementById('closeSummaryButton');
+
+		const EXPORT_CONTENT_WIDTH_FALLBACK = 860;
+		const prioritizedSectionTitles = ['Blind Deduction', 'Wine Identity'];
+
+		generateButton.addEventListener('click', () => {
+			openResultModal();
+		});
+
+		closeModalButton.addEventListener('click', () => {
+			closeResultModal();
+		});
+
+		modalBackdrop.addEventListener('click', (event) => {
+			if (event.target === modalBackdrop) {
+				closeResultModal();
+			}
+		});
+
+		exportJpgButton.addEventListener('click', async () => {
+			try {
+				await exportResultAsJpg();
+			} catch (error) {
+				console.error('Failed to export JPG:', error);
+				alert('Unable to export JPG. Please try again.');
+			}
+		});
+
+		exportCsvButton.addEventListener('click', () => {
+			exportResultAsCsv();
+		});
+
+		exportSummaryButton.addEventListener('click', () => {
+			openSummaryModal();
+		});
+
+		closeSummaryButton.addEventListener('click', () => {
+			closeSummaryModal();
+		});
+
+		summaryModalBackdrop.addEventListener('click', (event) => {
+			if (event.target === summaryModalBackdrop) {
+				closeSummaryModal();
+			}
+		});
+
+		copySummaryButton.addEventListener('click', async () => {
+			const text = summaryContent ? summaryContent.textContent : '';
+			if (!text) {
+				return;
+			}
+			try {
+				await navigator.clipboard.writeText(text);
+				copySummaryButton.textContent = 'Copied!';
+				setTimeout(() => {
+					copySummaryButton.textContent = 'Copy';
+				}, 2000);
+			} catch (err) {
+				console.error('Failed to copy summary:', err);
+				alert('Unable to copy. Please try again.');
+			}
+		});
+
+		function getExportContentWidth() {
+			const customWidth = getComputedStyle(document.documentElement).getPropertyValue('--export-content-width');
+			const numericValue = parseFloat(customWidth);
+			if (!isNaN(numericValue) && numericValue > 0) {
+				return numericValue;
+			}
+			return EXPORT_CONTENT_WIDTH_FALLBACK;
+		}
+
+		let html2CanvasLoader = null;
+
+		function loadScriptOnce(url) {
+			if (html2CanvasLoader) {
+				return html2CanvasLoader;
+			}
+
+			html2CanvasLoader = new Promise((resolve, reject) => {
+				const script = document.createElement('script');
+				script.src = url;
+				script.defer = true;
+				script.onload = () => resolve(window.html2canvas);
+				script.onerror = () => reject(new Error(`Failed to load script: ${url}`));
+				document.head.appendChild(script);
+			});
+
+			return html2CanvasLoader;
+		}
+
+		async function ensureHtml2Canvas() {
+			if (window.html2canvas) {
+				return window.html2canvas;
+			}
+			return loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+		}
+
+		async function exportResultAsJpg() {
+			const modal = document.querySelector('.result-modal');
+			if (!modal) {
+				throw new Error('Result modal not found.');
+			}
+
+			const forcedWidthClass = 'exporting-desktop';
+			const htmlElement = document.documentElement;
+			htmlElement.classList.add(forcedWidthClass);
+
+			const html2canvas = await ensureHtml2Canvas();
+
+			const actionBar = modal.querySelector('.result-modal-actions');
+			const originalActionDisplay = actionBar ? actionBar.style.display : '';
+			if (actionBar) {
+				actionBar.style.display = 'none';
+			}
+
+			const targetLayoutWidth = getExportContentWidth();
+			const previousBodyWidth = document.body.style.width;
+			const previousBodyMaxWidth = document.body.style.maxWidth;
+			const previousModalWidth = modal.style.width;
+			const previousModalMaxWidth = modal.style.maxWidth;
+			const previousModalMinWidth = modal.style.minWidth;
+
+			document.body.style.width = `${targetLayoutWidth}px`;
+			document.body.style.maxWidth = `${targetLayoutWidth}px`;
+			modal.style.width = `${targetLayoutWidth}px`;
+			modal.style.maxWidth = `${targetLayoutWidth}px`;
+			modal.style.minWidth = `${targetLayoutWidth}px`;
+
+			const originalScrollTop = modal.scrollTop;
+			modal.scrollTop = 0;
+
+			try {
+				const captureScale = Math.max(2, window.devicePixelRatio || 1);
+				const canvas = await html2canvas(modal, {
+					backgroundColor: '#ffffff',
+					logging: false,
+					useCORS: true,
+					windowWidth: targetLayoutWidth,
+					windowHeight: modal.scrollHeight,
+					width: targetLayoutWidth,
+					scale: captureScale
+				});
+
+				const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+				const link = document.createElement('a');
+				link.href = dataUrl;
+				link.download = `wset-tasting-${getTimestampSlug()}.jpg`;
+				link.click();
+			} finally {
+				if (actionBar) {
+					actionBar.style.display = originalActionDisplay;
+				}
+				htmlElement.classList.remove(forcedWidthClass);
+				document.body.style.width = previousBodyWidth;
+				document.body.style.maxWidth = previousBodyMaxWidth;
+				modal.style.width = previousModalWidth;
+				modal.style.maxWidth = previousModalMaxWidth;
+				modal.style.minWidth = previousModalMinWidth;
+				modal.scrollTop = originalScrollTop;
+			}
+		}
+
+		function getTimestampSlug() {
+			const now = new Date();
+			const y = now.getFullYear();
+			const m = String(now.getMonth() + 1).padStart(2, '0');
+			const d = String(now.getDate()).padStart(2, '0');
+			const hh = String(now.getHours()).padStart(2, '0');
+			const mm = String(now.getMinutes()).padStart(2, '0');
+			const ss = String(now.getSeconds()).padStart(2, '0');
+			return `${y}${m}${d}-${hh}${mm}${ss}`;
+		}
+
+		function getOrderedSections() {
+			const allSections = Array.from(document.querySelectorAll('form > section'));
+			const prioritizedSections = [];
+			const remainingSections = [];
+
+			allSections.forEach(section => {
+				const titleElement = section.querySelector(':scope > h2');
+				const title = titleElement ? normalizeWhitespace(titleElement.textContent) : '';
+				const priorityIndex = prioritizedSectionTitles.indexOf(title);
+				if (priorityIndex !== -1) {
+					prioritizedSections[priorityIndex] = section;
+				} else {
+					remainingSections.push(section);
+				}
+			});
+
+			return prioritizedSections.filter(Boolean).concat(remainingSections);
+		}
+
+		function exportResultAsCsv() {
+			try {
+				const rows = collectCsvRows();
+				if (!rows.length) {
+					alert('No data available to export.');
+					return;
+				}
+				const csvContent = rows
+					.map(row => row.map(escapeCsvValue).join(','))
+					.join('\r\n');
+				const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+				const url = URL.createObjectURL(blob);
+				const link = document.createElement('a');
+				link.href = url;
+				link.download = `wset-tasting-${getTimestampSlug()}.csv`;
+				link.click();
+				URL.revokeObjectURL(url);
+			} catch (error) {
+				console.error('Failed to export CSV:', error);
+				alert('Unable to export CSV. Please try again.');
+			}
+		}
+
+		function collectCsvRows() {
+			const rows = [];
+			const sections = getOrderedSections();
+			sections.forEach(section => {
+				const titleElement = section.querySelector(':scope > h2');
+				const sectionTitle = titleElement ? normalizeWhitespace(titleElement.textContent).toUpperCase() : '';
+				if (sectionTitle) {
+					rows.push([sectionTitle, '']);
+				}
+				rows.push(...collectRowsFromSection(section));
+			});
+			return rows;
+		}
+
+		function collectRowsFromSection(section) {
+			const rows = [];
+			const stacks = Array.from(section.querySelectorAll(':scope > .control-group-stack'));
+			stacks.forEach(stack => {
+				const groups = Array.from(stack.querySelectorAll(':scope > .control-group'));
+				groups.forEach(group => {
+					rows.push(...collectRowsFromGroup(group));
+				});
+			});
+
+			const topHeading = section.querySelector(':scope > .aroma-flavor-heading');
+			if (topHeading) {
+				const headingText = normalizeWhitespace(topHeading.querySelector('h3')?.textContent || '');
+				if (headingText) {
+					rows.push([headingText, '']);
+				}
+				const aromaSections = Array.from(section.querySelectorAll(':scope > .aroma-flavor-section'));
+				aromaSections.forEach(aromaSection => {
+					const subHeading = normalizeWhitespace(aromaSection.querySelector(':scope > .aroma-flavor-heading h4')?.textContent || '');
+					if (subHeading) {
+						rows.push([subHeading, '']);
+					}
+					const aromaGroups = Array.from(aromaSection.querySelectorAll(':scope > .aroma-flavor-body > .control-group'));
+					aromaGroups.forEach(group => {
+						rows.push(...collectRowsFromGroup(group));
+					});
+				});
+			}
+
+			return rows;
+		}
+
+		function collectRowsFromGroup(group) {
+			const rows = [];
+			const labelElement = group.querySelector(':scope > .control-group-label');
+			const groupLabel = labelElement ? normalizeWhitespace(labelElement.textContent || '') : '';
+			const groupings = Array.from(group.querySelectorAll(':scope > .control-group-body > .control-group-body-grouping'));
+
+			if (groupings.length) {
+				groupings.forEach(grouping => {
+					const row = collectRowFromGrouping(groupLabel, grouping);
+					if (row) {
+						rows.push(row);
+					}
+				});
+			} else {
+				const result = collectValuesFromGroupingForCsv(groupLabel, '', group);
+				const label = result.label || groupLabel || '';
+				rows.push([label, result.values.join(', ')]);
+			}
+
+			return rows;
+		}
+
+		function collectRowFromGrouping(groupLabel, grouping) {
+			const subLabelElement = grouping.querySelector(':scope > .control-group-body-grouping-label');
+			const subLabel = subLabelElement ? normalizeWhitespace(subLabelElement.textContent || '') : '';
+			const { label, values } = collectValuesFromGroupingForCsv(groupLabel, subLabel, grouping);
+			return [label || groupLabel, values.join(', ')];
+		}
+
+		function collectValuesFromGroupingForCsv(groupLabel, subLabel, container) {
+			const selectionInputs = Array.from(container.querySelectorAll('input[type="radio"], input[type="checkbox"]'));
+			const textInputs = Array.from(container.querySelectorAll('input[type="text"]'));
+
+			const hasRadio = selectionInputs.some(input => input.type === 'radio');
+			const hasCheckbox = selectionInputs.some(input => input.type === 'checkbox');
+
+			const radioValues = selectionInputs
+				.filter(input => input.type === 'radio' && input.checked)
+				.map(getInputDisplayText)
+				.filter(Boolean);
+
+			const checkboxValues = selectionInputs
+				.filter(input => input.type === 'checkbox' && input.checked)
+				.map(getInputDisplayText)
+				.filter(Boolean);
+
+			const textValues = textInputs
+				.map(input => normalizeWhitespace(input.value || ''))
+				.filter(value => value.length);
+
+			const isAlcoholGrouping = groupLabel === 'Alcohol' && subLabel === '';
+			const isQualityGrouping = groupLabel === 'Quality Level' && subLabel === '';
+
+			if (isAlcoholGrouping) {
+				if (hasCheckbox && !hasRadio) {
+					const combined = checkboxValues.concat(textValues);
+					return {
+						label: 'Fortified',
+						values: combined.length ? combined : ['']
+					};
+				}
+				const combined = radioValues.concat(textValues);
+				return {
+					label: groupLabel,
+					values: combined.length ? combined : ['']
+				};
+			}
+
+			if (isQualityGrouping) {
+				if (hasCheckbox && !hasRadio) {
+					const combined = checkboxValues.concat(textValues);
+					return {
+						label: 'Simple',
+						values: combined.length ? combined : ['']
+					};
+				}
+				const combined = radioValues.concat(textValues);
+				return {
+					label: groupLabel,
+					values: combined.length ? combined : ['']
+				};
+			}
+
+			const combinedValues = selectionInputs
+				.filter(input => input.checked)
+				.map(getInputDisplayText)
+				.filter(Boolean)
+				.concat(textValues);
+
+			return {
+				label: subLabel ? `${groupLabel} - ${subLabel}` : groupLabel,
+				values: combinedValues.length ? combinedValues : ['']
+			};
+		}
+
+		function getInputDisplayText(input) {
+			if (input.id) {
+				const escapedId = escapeCssIdentifier(input.id);
+				const label = escapedId ? document.querySelector(`label[for="${escapedId}"]`) : null;
+				if (label) {
+					return normalizeWhitespace(label.textContent || '');
+				}
+			}
+			return normalizeWhitespace(input.value || '');
+		}
+
+		function escapeCsvValue(value) {
+			const stringValue = value == null ? '' : String(value);
+			if (/[",\n\r]/.test(stringValue)) {
+				return `"${stringValue.replace(/"/g, '""')}"`;
+			}
+			return stringValue;
+		}
+
+		function openSummaryModal() {
+			if (!summaryModalBackdrop || !summaryContent) {
+				return;
+			}
+			const summaryText = buildSummaryText();
+			summaryContent.textContent = summaryText || 'No descriptive data available.';
+			summaryModalBackdrop.hidden = false;
+			if (copySummaryButton) {
+				copySummaryButton.textContent = 'Copy';
+				copySummaryButton.focus();
+			}
+		}
+
+		function closeSummaryModal() {
+			if (!summaryModalBackdrop) {
+				return;
+			}
+			summaryModalBackdrop.hidden = true;
+			exportSummaryButton?.focus();
+		}
+
+		function buildSummaryText() {
+			const lines = [];
+			const sampleNumber = getInputValue('tasting-sample-number');
+			if (sampleNumber) {
+				lines.push(`Tasting Sample: ${sampleNumber}`);
+			}
+
+			const producer = getInputValue('identity-winery');
+			const vintage = getInputValue('identity-vintage');
+			if (producer || vintage) {
+				const identityParts = [];
+				if (producer) identityParts.push(producer);
+				if (vintage) identityParts.push(vintage);
+				lines.push(`Wine Identity: ${identityParts.join(' ')}`);
+			}
+
+			const appearanceSection = getSectionByTitle('Appearance');
+			if (appearanceSection) {
+				const appearanceSummary = buildAppearanceSummary(appearanceSection);
+				if (appearanceSummary) {
+					lines.push(`APPEARANCE: ${appearanceSummary}`);
+				}
+			}
+
+			const noseSection = getSectionByTitle('Nose');
+			if (noseSection) {
+				const noseSummary = buildNoseSummary(noseSection);
+				if (noseSummary) {
+					lines.push(`NOSE: ${noseSummary}`);
+				}
+			}
+
+			const palateSection = getSectionByTitle('Palate');
+			if (palateSection) {
+				const palateSummary = buildPalateSummary(palateSection);
+				if (palateSummary) {
+					lines.push(`PALATE: ${palateSummary}`);
+				}
+			}
+
+			const conclusionsSection = getSectionByTitle('Conclusions');
+			if (conclusionsSection) {
+				const conclusionsSummary = buildConclusionsSummary(conclusionsSection);
+				if (conclusionsSummary) {
+					lines.push(`CONCLUSIONS: ${conclusionsSummary}`);
+				}
+			}
+
+			return lines.join('\n\n');
+		}
+
+		function buildAppearanceSummary(section) {
+			const clarity = getSelectedRadioTextByName('appearance-clarity');
+			const intensity = getSelectedRadioTextByName('appearance-intensity');
+			const color = getSelectedRadioTextByName('appearance-color');
+
+			let sentence = '';
+			if (clarity || color) {
+				if (clarity) {
+					sentence += capitalizeFirst(clarity);
+				}
+				if (color) {
+					sentence += (sentence ? ' ' : '') + `${color} color`;
+				} else if (!clarity) {
+					sentence += 'Shows a clear appearance';
+				}
+			}
+
+			if (intensity) {
+				if (sentence) {
+					sentence += `, with ${intensity} intensity`;
+				} else {
+					sentence = `With ${intensity} intensity`;
+				}
+			}
+
+			return sentence ? ensurePeriod(sentence) : '';
+		}
+
+		function buildNoseSummary(section) {
+			const condition = getSelectedRadioTextByName('nose-condition');
+			const intensity = getSelectedRadioTextByName('nose-intensity');
+			const development = getSelectedRadioTextByName('nose-development');
+
+			const sentences = [];
+			let base = '';
+			if (condition) {
+				base += capitalizeFirst(condition);
+			}
+			if (intensity) {
+				base += (base ? ', ' : '') + `with ${intensity} intensity`;
+			}
+			if (base && base.startsWith('with ')) {
+				base = capitalizeFirst(base);
+			}
+			if (base) {
+				sentences.push(ensurePeriod(base));
+			}
+
+			const aromaPhrases = collectDescriptorPhrases(section, { lowercaseLabel: true });
+			if (aromaPhrases.length) {
+				sentences.push(`Has ${joinWithAnd(aromaPhrases)} aromas.`);
+			}
+
+			if (development) {
+				sentences.push(`This wine is ${development}.`);
+			}
+
+			return sentences.join(' ');
+		}
+
+		function buildPalateSummary(section) {
+			const sweetness = getSelectedRadioTextByName('palate-sweetness');
+			const acidity = getSelectedRadioTextByName('palate-acidity');
+			const tannin = getSelectedRadioTextByName('palate-tannin');
+			const alcohol = getSelectedRadioTextByName('palate-alcohol');
+			const body = getSelectedRadioTextByName('palate-body');
+			const flavorIntensity = getSelectedRadioTextByName('palate-flavorintensity');
+			const finish = getSelectedRadioTextByName('palate-finish');
+
+			const sentences = [];
+			let structureSentence = '';
+			if (sweetness) {
+				structureSentence += capitalizeFirst(sweetness);
+			}
+
+			const structureParts = [];
+			if (acidity) structureParts.push(`${acidity} acidity`);
+			if (tannin) structureParts.push(`${tannin} tannin`);
+			if (alcohol) structureParts.push(`${alcohol} alcohol`);
+			if (body) structureParts.push(`${body} body`);
+
+			if (structureParts.length) {
+				const phrase = `with ${joinWithAnd(structureParts)}`;
+				structureSentence += (structureSentence ? ', ' : '') + phrase;
+			}
+
+			if (structureSentence && structureSentence.startsWith('with ')) {
+				structureSentence = capitalizeFirst(structureSentence);
+			}
+
+			if (structureSentence) {
+				sentences.push(ensurePeriod(structureSentence));
+			}
+
+			if (flavorIntensity) {
+				sentences.push(`${capitalizeFirst(flavorIntensity)} flavor intensity.`);
+			}
+
+			const flavorPhrases = collectDescriptorPhrases(section, { lowercaseLabel: true });
+			if (flavorPhrases.length) {
+				sentences.push(`Has ${joinWithAnd(flavorPhrases)} flavors.`);
+			}
+
+			if (finish) {
+				sentences.push(`Has a ${finish} finish.`);
+			}
+
+			return sentences.join(' ');
+		}
+
+		function buildConclusionsSummary(section) {
+			const quality = getSelectedRadioTextByName('conclusions-qualitylevel');
+			const isSimple = document.getElementById('conclusions-simple')?.checked;
+			const readiness = getSelectedRadioTextByName('conclusions-readiness');
+
+			const sentences = [];
+			if (quality) {
+				const article = indefiniteArticle(quality);
+				let sentence = `This is ${article} ${quality} wine`;
+				if (isSimple) {
+					sentence += ' and a simple wine';
+				}
+				sentence += '.';
+				sentences.push(sentence);
+			} else if (isSimple) {
+				sentences.push('This wine is simple.');
+			}
+
+			if (readiness) {
+				sentences.push(`${capitalizeFirst(readiness)}.`);
+			}
+
+			return sentences.join(' ');
+		}
+
+		function collectDescriptorPhrases(section, options = {}) {
+			const phrases = [];
+			const aromaSections = Array.from(section.querySelectorAll(':scope > .aroma-flavor-section'));
+			aromaSections.forEach(aromaSection => {
+				const groups = Array.from(aromaSection.querySelectorAll(':scope > .aroma-flavor-body > .control-group'));
+				groups.forEach(group => {
+					const labelElement = group.querySelector(':scope > .control-group-label p');
+					const groupLabel = labelElement ? normalizeWhitespace(labelElement.textContent || '') : '';
+					const descriptorValues = [];
+					const checks = Array.from(group.querySelectorAll('input[type="checkbox"]'));
+					checks.forEach(input => {
+						if (input.checked) {
+							const text = getInputDisplayText(input);
+							if (text) descriptorValues.push(text);
+						}
+					});
+					const textInputs = Array.from(group.querySelectorAll('input[type="text"]'));
+					textInputs.forEach(input => {
+						const value = normalizeWhitespace(input.value || '');
+						if (value) descriptorValues.push(value);
+					});
+					if (descriptorValues.length) {
+						let phrase = '';
+						if (groupLabel) {
+							const labelProcessed = options.lowercaseLabel ? groupLabel.toLowerCase() : groupLabel;
+							phrase = `${labelProcessed} (${joinWithAnd(descriptorValues)})`;
+						} else {
+							phrase = joinWithAnd(descriptorValues);
+						}
+						phrases.push(phrase);
+					}
+				});
+			});
+			return phrases;
+		}
+
+		function getSectionByTitle(title) {
+			return Array.from(document.querySelectorAll('form > section')).find(section => {
+				const heading = section.querySelector(':scope > h2');
+				return heading && normalizeWhitespace(heading.textContent || '').toLowerCase() === title.toLowerCase();
+			}) || null;
+		}
+
+		function getInputValue(id) {
+			const el = document.getElementById(id);
+			return el ? normalizeWhitespace(el.value || '') : '';
+		}
+
+		function getSelectedRadioTextByName(name) {
+			const input = document.querySelector(`input[name="${name}"]:checked`);
+			return input ? getInputDisplayText(input) : '';
+		}
+
+		function joinWithAnd(items) {
+			const filtered = items.filter(Boolean);
+			if (!filtered.length) {
+				return '';
+			}
+			if (filtered.length === 1) {
+				return filtered[0];
+			}
+			if (filtered.length === 2) {
+				return `${filtered[0]} and ${filtered[1]}`;
+			}
+			return `${filtered.slice(0, -1).join(', ')}, and ${filtered[filtered.length - 1]}`;
+		}
+
+		function capitalizeFirst(text) {
+			if (!text) {
+				return '';
+			}
+			return text.charAt(0).toUpperCase() + text.slice(1);
+		}
+
+		function ensurePeriod(text) {
+			if (!text) {
+				return '';
+			}
+			return /[.!?]$/.test(text) ? text : `${text}.`;
+		}
+
+		function indefiniteArticle(word) {
+			const firstLetter = (word || '').trim().charAt(0).toLowerCase();
+			return ['a', 'e', 'i', 'o', 'u'].includes(firstLetter) ? 'an' : 'a';
+		}
+
+
+		function openResultModal() {
+			modalSectionsContainer.innerHTML = '';
+
+			const orderedSections = getOrderedSections();
+
+			let hasAnyContent = false;
+
+			orderedSections.forEach(originalSection => {
+				const resultSection = buildResultSection(originalSection);
+				if (resultSection) {
+					modalSectionsContainer.appendChild(resultSection);
+					hasAnyContent = true;
+				}
+			});
+
+			if (!hasAnyContent) {
+				const emptyMessage = document.createElement('p');
+				emptyMessage.textContent = 'No selections were made.';
+				modalSectionsContainer.appendChild(emptyMessage);
+			}
+
+			modalTimestamp.textContent = buildTimestampText();
+			modalBackdrop.hidden = false;
+			document.body.classList.add('modal-open');
+			closeModalButton.focus();
+		}
+
+		function closeResultModal() {
+			if (summaryModalBackdrop && !summaryModalBackdrop.hidden) {
+				closeSummaryModal();
+			}
+			modalBackdrop.hidden = true;
+			document.body.classList.remove('modal-open');
+			generateButton.focus();
+		}
+
+		function buildTimestampText() {
+			const now = new Date();
+			const datePart = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+			const timePart = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+			const timeZone = Intl.DateTimeFormat([], { timeZoneName: 'short' })
+				.formatToParts(now)
+				.find(part => part.type === 'timeZoneName');
+			const zoneText = timeZone ? ` ${timeZone.value}` : '';
+			return `Tasted at ${timePart} on ${datePart} (${zoneText} )`;
+		}
+
+		function buildResultSection(originalSection) {
+			const sectionTitleElement = originalSection.querySelector(':scope > h2');
+			const sectionTitle = sectionTitleElement ? normalizeWhitespace(sectionTitleElement.textContent) : '';
+
+			const sectionContainer = document.createElement('section');
+
+			let hasContent = false;
+
+			if (sectionTitle) {
+				if (sectionTitle.toLowerCase() === 'nose' || sectionTitle.toLowerCase() === 'palate') {
+					sectionContainer.classList.add('result-section-aroma-wrapper');
+				}
+
+				const title = document.createElement('h2');
+				title.textContent = sectionTitle;
+				sectionContainer.appendChild(title);
+			}
+
+			const stacks = Array.from(originalSection.querySelectorAll(':scope > .control-group-stack'));
+			stacks.forEach(stack => {
+				const groups = Array.from(stack.querySelectorAll(':scope > .control-group'));
+				groups.forEach(group => {
+					const resultGroup = buildResultGroup(group);
+					if (resultGroup) {
+						sectionContainer.appendChild(resultGroup);
+						hasContent = true;
+					}
+				});
+			});
+
+			const topAromaHeading = originalSection.querySelector(':scope > .aroma-flavor-heading');
+			let topAromaHeadingClone = null;
+			if (topAromaHeading) {
+				topAromaHeadingClone = topAromaHeading.cloneNode(true);
+				const description = topAromaHeadingClone.querySelector('p');
+				if (description) {
+					description.remove();
+				}
+			}
+			let appendedAromaHeading = false;
+
+			const aromaSections = Array.from(originalSection.querySelectorAll(':scope > .aroma-flavor-section'));
+			aromaSections.forEach(aromaSection => {
+				const resultSubsection = buildResultSubsection(aromaSection);
+				if (resultSubsection) {
+					if (!appendedAromaHeading && topAromaHeadingClone) {
+						topAromaHeadingClone.classList.add('result-subheading');
+						sectionContainer.appendChild(topAromaHeadingClone);
+						appendedAromaHeading = true;
+					}
+					sectionContainer.appendChild(resultSubsection);
+					hasContent = true;
+				}
+			});
+
+			if (!hasContent) {
+				return null;
+			}
+
+			return sectionContainer;
+		}
+
+		function buildResultSubsection(aromaSection) {
+			const subsectionContainer = document.createElement('div');
+			subsectionContainer.className = 'result-subsection';
+			if (aromaSection.dataset && aromaSection.dataset.level) {
+				subsectionContainer.classList.add('result-subsection-aroma');
+				subsectionContainer.dataset.level = aromaSection.dataset.level;
+			}
+
+			const headingWrapper = aromaSection.querySelector(':scope > .aroma-flavor-heading');
+			if (headingWrapper) {
+				const header = document.createElement('div');
+				header.className = 'result-subsection-header';
+
+				const titleElement = headingWrapper.querySelector('h4');
+				if (titleElement) {
+					const title = document.createElement('h3');
+					title.textContent = normalizeWhitespace(titleElement.textContent);
+					header.appendChild(title);
+				}
+
+				const descriptionElement = headingWrapper.querySelector('p');
+				if (descriptionElement) {
+					const description = document.createElement('p');
+					description.textContent = normalizeWhitespace(descriptionElement.textContent);
+					header.appendChild(description);
+				}
+
+				subsectionContainer.appendChild(header);
+			}
+
+			const body = document.createElement('div');
+			body.className = 'result-subsection-body';
+			let hasContent = false;
+
+			const groups = Array.from(aromaSection.querySelectorAll(':scope > .aroma-flavor-body > .control-group'));
+			groups.forEach(group => {
+				const resultGroup = buildResultGroup(group);
+				if (resultGroup) {
+					body.appendChild(resultGroup);
+					hasContent = true;
+				}
+			});
+
+			if (!hasContent) {
+				return null;
+			}
+
+			subsectionContainer.appendChild(body);
+			return subsectionContainer;
+		}
+
+		function buildResultGroup(group) {
+			const entries = gatherGroupEntries(group);
+			if (!entries.length) {
+				return null;
+			}
+
+			const labelElement = group.querySelector(':scope > .control-group-label');
+			let groupLabelHTML = '';
+			let groupLabelText = '';
+			if (labelElement) {
+				groupLabelHTML = labelElement.innerHTML;
+				groupLabelText = normalizeWhitespace(labelElement.textContent);
+			}
+
+			const groupContainer = document.createElement('div');
+			groupContainer.className = 'control-group result-group';
+
+			const labelContainer = document.createElement('div');
+			labelContainer.className = 'control-group-label';
+			const labelParagraph = document.createElement('p');
+			if (groupLabelHTML && /<[^>]+>/.test(groupLabelHTML)) {
+				labelParagraph.innerHTML = groupLabelHTML;
+			} else {
+				labelParagraph.textContent = groupLabelText;
+			}
+			labelContainer.appendChild(labelParagraph);
+
+			const bodyContainer = document.createElement('div');
+			bodyContainer.className = 'control-group-body';
+
+			const grouping = document.createElement('div');
+			grouping.className = 'control-group-body-grouping';
+
+			const groupingBody = document.createElement('div');
+			groupingBody.className = 'control-group-body-grouping-body result-group-body';
+
+			entries.forEach(entry => {
+				const paragraph = document.createElement('p');
+				paragraph.className = 'result-entry';
+
+				if (entry.subLabel) {
+					const subLabelSpan = document.createElement('span');
+					subLabelSpan.className = 'result-entry-label';
+					subLabelSpan.textContent = `${entry.subLabel}:`;
+					paragraph.appendChild(subLabelSpan);
+				}
+
+				const valueSpan = document.createElement('span');
+				valueSpan.className = 'result-entry-values';
+				appendValueList(valueSpan, entry.values);
+				paragraph.appendChild(valueSpan);
+
+				groupingBody.appendChild(paragraph);
+			});
+
+			grouping.appendChild(groupingBody);
+			bodyContainer.appendChild(grouping);
+			groupContainer.appendChild(labelContainer);
+			groupContainer.appendChild(bodyContainer);
+
+			return groupContainer;
+		}
+
+		function appendValueList(container, values) {
+			values.forEach((valueObj, index) => {
+				const normalized = typeof valueObj === 'string'
+					? createValueObject(valueObj, false)
+					: valueObj;
+				if (!normalized || !normalized.content) {
+					return;
+				}
+				if (index > 0) {
+					container.appendChild(document.createTextNode(', '));
+				}
+				appendValueContent(container, normalized);
+			});
+		}
+
+		function appendValueContent(container, valueObj) {
+			if (valueObj.isHTML) {
+				if (valueObj.fragment && valueObj.fragment.length) {
+					valueObj.fragment.forEach(node => container.appendChild(node.cloneNode(true)));
+				} else {
+					const wrapper = document.createElement('span');
+					wrapper.innerHTML = valueObj.content;
+					while (wrapper.firstChild) {
+						container.appendChild(wrapper.firstChild);
+					}
+				}
+			} else {
+				container.appendChild(document.createTextNode(valueObj.content));
+			}
+		}
+
+		function createValueObject(content, isHTML, fragmentNodes) {
+			if (isHTML) {
+				return {
+					content: String(content),
+					isHTML: true,
+					fragment: fragmentNodes || []
+				};
+			}
+			return {
+				content: normalizeWhitespace(String(content)),
+				isHTML: false,
+				fragment: []
+			};
+		}
+
+		function gatherGroupEntries(group) {
+			const entryMap = new Map();
+			const groupings = Array.from(group.querySelectorAll(':scope > .control-group-body > .control-group-body-grouping'));
+
+			groupings.forEach(grouping => {
+				gatherGroupingEntries(grouping).forEach(entry => {
+					if (!entry || !entry.values || !entry.values.length) {
+						return;
+					}
+					const key = entry.subLabel || '__default';
+					if (!entryMap.has(key)) {
+						entryMap.set(key, {
+							subLabel: entry.subLabel,
+							values: []
+						});
+					}
+					entryMap.get(key).values.push(...entry.values);
+				});
+			});
+
+			if (entryMap.size) {
+				return Array.from(entryMap.values());
+			}
+
+			const fallbackEntries = [];
+			const textInputs = Array.from(group.querySelectorAll(':scope input[type="text"]')).map(input => normalizeWhitespace(input.value || ''))
+				.filter(value => value.length);
+			textInputs.forEach(value => {
+				fallbackEntries.push({
+					subLabel: null,
+					values: [createValueObject(value, false)]
+				});
+			});
+
+			return fallbackEntries;
+		}
+
+		function gatherGroupingEntries(grouping) {
+			const entries = [];
+			const subLabelElement = grouping.querySelector(':scope > .control-group-body-grouping-label');
+			const subLabel = subLabelElement ? normalizeWhitespace(subLabelElement.textContent) : null;
+			const body = grouping.querySelector(':scope > .control-group-body-grouping-body') || grouping;
+
+			const selectionInputs = Array.from(body.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked'));
+			const selectionValues = selectionInputs
+				.map(input => getInputDisplayValue(input))
+				.filter(Boolean);
+			if (selectionValues.length) {
+				entries.push({
+					subLabel,
+					values: selectionValues
+				});
+			}
+
+			const textInputs = Array.from(body.querySelectorAll('input[type="text"]'))
+				.map(input => normalizeWhitespace(input.value || ''))
+				.filter(value => value.length);
+			textInputs.forEach(value => {
+				entries.push({
+					subLabel,
+					values: [createValueObject(value, false)]
+				});
+			});
+
+			if (!entries.length) {
+				entries.push({
+					subLabel,
+					values: []
+				});
+			}
+
+			return entries;
+		}
+
+		function getInputDisplayValue(input) {
+			if (input.id) {
+				const escapedId = escapeCssIdentifier(input.id);
+				const label = escapedId ? document.querySelector(`label[for="${escapedId}"]`) : null;
+				if (label) {
+					const html = label.innerHTML;
+					const text = normalizeWhitespace(label.textContent || '');
+					const containsMarkup = /<[^>]+>/.test(html);
+					if (containsMarkup) {
+						const fragment = document.createElement('span');
+						fragment.innerHTML = html;
+						const nodes = Array.from(fragment.childNodes).map(node => node.cloneNode(true));
+						return createValueObject(html, true, nodes);
+					}
+					if (text.length) {
+						return createValueObject(text, false);
+					}
+				}
+			}
+			const value = normalizeWhitespace(input.value || '');
+			if (value.length) {
+				return createValueObject(value, false);
+			}
+			return null;
+		}
+
+		function normalizeWhitespace(value) {
+			return value.replace(/\s+/g, ' ').trim();
+		}
+
+		function escapeCssIdentifier(value) {
+			if (!value) {
+				return '';
+			}
+			if (window.CSS && typeof window.CSS.escape === 'function') {
+				return window.CSS.escape(value);
+			}
+			return value.replace(/([!"#$%&'()*+,./:;<=>?@[\\\]^`{|}~])/g, '\\$1');
+		}
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'Escape') {
+				if (!summaryModalBackdrop.hidden) {
+					closeSummaryModal();
+					event.stopPropagation();
+					return;
+				}
+				if (!modalBackdrop.hidden) {
+					closeResultModal();
+				}
+			}
+		});
+		// ===== End Result Modal Logic =====
+
+		//-- Collapsible
+
+		function initializeCollapsible() {
+			// Select all relevant sections
+			const sections = document.querySelectorAll('.aroma-flavor-section');
+
+			sections.forEach(section => {
+				const heading = section.querySelector('.aroma-flavor-heading');
+				const h4 = heading.querySelector('h4');
+
+				if (h4 && (h4.textContent.includes('Secondary') || h4.textContent.includes('Tertiary'))) {
+
+					const trigger = document.createElement('div');
+					trigger.className = 'collapsible-trigger';
+
+					const arrow = document.createElement('div');
+					arrow.className = 'collapsible-arrow';
+
+					trigger.appendChild(arrow);
+					heading.appendChild(trigger);
+
+					section.classList.add('collapsed');
+
+					trigger.addEventListener('click', (e) => {
+						e.stopPropagation();
+						section.classList.toggle('collapsed');
+
+					});
+
+				}
+			});
+		}
+
+		document.addEventListener('DOMContentLoaded', initializeCollapsible);
+
+		//-- Collapsible --//
+
+
+		document.querySelectorAll('form input[type="radio"] + label').forEach(label => {
+			label.addEventListener('click', event => {
+				const inputId = label.getAttribute('for'); // Get the associated input IDs
+				const input = document.getElementById(inputId); // Get the associated inputs
+
+				if (input && input.checked) {
+					event.preventDefault();
+					input.checked = false;
+				}
+			});
+		});
+
+		document.querySelectorAll('input[type="text"]').forEach(input => {
+			input.addEventListener('keypress', (e) => {
+				if (e.key === 'Enter') {
+					e.preventDefault();
+				}
+			});
+		});
+
+		function handleOtherInput(event, level, type) {
+			if (event.key === 'Enter') {
+				event.preventDefault();
+				const input = event.target;
+				const value = input.value.trim();
+
+				// console.log('New input:', value);
+				// console.log('Input type:', type, 'Level:', level);
+
+				if (value) {
+					const controlGroupBody = input.closest('.control-group-body-grouping-body')
+						|| input.closest('.control-group-body-grouping');
+
+					if (!controlGroupBody) {
+						// console.warn('Cannot find controlGroupBody for', input);
+						return;
+					}
+
+					const id = `${type}-other-${level}-${Date.now()}`;
+
+					const checkbox = document.createElement('input');
+					checkbox.type = 'checkbox';
+					checkbox.id = id;
+					checkbox.value = value;
+					checkbox.checked = true;
+					checkbox.name = `${type}-other-${level}[]`;
+					checkbox.style.display = 'none';
+
+					const label = document.createElement('label');
+					label.htmlFor = id;
+					label.textContent = value;
+
+					label.style.display = 'inline-block';
+					label.style.border = '1px solid var(--dark-green)';
+					label.style.backgroundColor = 'var(--dark-green)';
+					label.style.color = '#fff';
+					label.style.maxWidth = '150px';
+					label.style.margin = '3px';
+					label.style.padding = '5px 10px';
+					label.style.textAlign = 'center';
+					label.style.cursor = 'pointer';
+					label.style.borderRadius = '4pt';
+
+					checkbox.addEventListener('change', function () {
+						if (this.checked) {
+							label.style.backgroundColor = 'var(--dark-green)';
+							label.style.color = '#fff';
+						} else {
+							label.remove();
+							this.remove();
+						}
+					});
+
+					input.insertAdjacentElement('beforebegin', checkbox);
+					input.insertAdjacentElement('beforebegin', label);
+
+					input.value = '';
+				}
+			}
+		}
+
+		['primary', 'secondary', 'tertiary'].forEach(level => {
+			const noseInput = document.getElementById(`nose-aromas-other-text-${level}`);
+			if (noseInput) noseInput.addEventListener('keypress', e => handleOtherInput(e, level, 'nose-aromas'));
+
+			const palateInput = document.getElementById(`palate-flavors-other-text-${level}`);
+			if (palateInput) palateInput.addEventListener('keypress', e => handleOtherInput(e, level, 'palate-flavors'));
+		});
+
+
+		document.querySelectorAll('input[type="text"][placeholder="Other"]').forEach(input => {
+			input.addEventListener('keypress', handleOtherInput);
+		});
+
+
+		function copyFromAroma(level) {
+			//* console.log('Copying from level:', level);
+
+			const sections = document.querySelectorAll(`.aroma-flavor-section[data-level="${level}"]`);
+			if (!sections || sections.length < 2) {
+				// console.warn('Cannot find sections for level:', level);
+				return;
+			}
+
+			const aromaSection = sections[0];
+			const palateSection = sections[1];
+
+			// Copy Other
+			const aromaCheckboxes = aromaSection.querySelectorAll('input[type="checkbox"]:checked');
+			aromaCheckboxes.forEach(aromaCheckbox => {
+				const id = aromaCheckbox.id || '';
+				const palateId = id.replace(/^nose-aromas/, 'palate-flavors'); // 仅替换开头
+				const palateCheckbox = palateSection.querySelector(`#${CSS.escape(palateId)}`);
+				if (palateCheckbox) {
+					palateCheckbox.checked = true;
+					//* console.log('Checked existing palate checkbox:', palateId);
+				} else {
+					//* console.log('No matching existing palate checkbox for:', palateId);
+				}
+			});
+
+			// Copy Other input
+			//* console.log('--- START copying custom OTHER items ---');
+
+			function findOtherContainer(section) {
+				const groups = Array.from(section.querySelectorAll('.control-group'));
+				for (const g of groups) {
+					const labelP = g.querySelector('.control-group-label p');
+					if (labelP && labelP.textContent.trim().toLowerCase() === 'other') {
+						return g.querySelector('.control-group-body-grouping-body') || g.querySelector('.control-group-body-grouping') || g.querySelector('.control-group-body');
+					}
+				}
+				return null;
+			}
+
+			const aromaOtherContainer = findOtherContainer(aromaSection);
+			const palateOtherContainer = findOtherContainer(palateSection);
+
+			//* console.log('aromaOtherContainer (Other-group):', aromaOtherContainer);
+			//* console.log('palateOtherContainer (Other-group):', palateOtherContainer);
+
+			if (!aromaOtherContainer) {
+				console.warn('aromaOtherContainer (Other) not found for level', level);
+			}
+			if (!palateOtherContainer) {
+				console.warn('palateOtherContainer (Other) not found for level', level);
+			}
+
+			if (aromaOtherContainer && palateOtherContainer) {
+				const allAromaCheckboxes = Array.from(aromaOtherContainer.querySelectorAll('input[type="checkbox"]'));
+				//* console.log('All checkbox elements in aromaOtherContainer (count):', allAromaCheckboxes.length);
+				// allAromaCheckboxes.forEach((cb, i) => {
+				// 	console.log(` aroma cb[${i}] id='${cb.id}' value='${cb.value}' checked=${cb.checked} class='${cb.className}' dataset=`, cb.dataset);
+				// });
+
+				let dynamicAromaCheckboxes = allAromaCheckboxes.filter(cb =>
+					cb.classList.contains('custom-other') ||
+					cb.id.startsWith('custom-') ||
+					cb.dataset.custom === 'true' ||
+					cb.dataset.fromAroma
+				);
+
+				//* console.log('Initially filtered dynamicAromaCheckboxes count:', dynamicAromaCheckboxes.length);
+
+				if (dynamicAromaCheckboxes.length === 0) {
+					const checkedInAroma = Array.from(aromaOtherContainer.querySelectorAll('input[type="checkbox"]:checked'));
+					//* console.log('No explicit dynamic items found; fallback checked count:', checkedInAroma.length);
+					dynamicAromaCheckboxes = checkedInAroma;
+				}
+
+				//* console.log('Final dynamicAromaCheckboxes to copy count:', dynamicAromaCheckboxes.length);
+
+				const existingPalateCustoms = palateOtherContainer.querySelectorAll('input[type="checkbox"].custom-other');
+				//* console.log('Palate existing custom-other count to remove:', existingPalateCustoms.length);
+				existingPalateCustoms.forEach(cb => {
+					//* console.log(' removing palate custom cb:', cb.id, cb.value);
+					cb.remove();
+				});
+				palateOtherContainer.querySelectorAll('label.custom-other-label').forEach(lbl => {
+					//* console.log(' removing palate custom label:', lbl.htmlFor, lbl.textContent);
+					lbl.remove();
+				});
+
+				dynamicAromaCheckboxes.forEach((cb, idx) => {
+					try {
+						const value = cb.value || cb.getAttribute('value') || (cb.nextElementSibling && cb.nextElementSibling.textContent && cb.nextElementSibling.textContent.trim()) || (`custom-${idx}`);
+						//* console.log(`Processing aroma dynamic[${idx}] id='${cb.id}' value='${value}' checked=${cb.checked}`);
+
+						let newId;
+						if (cb.id && /^nose-aromas/.test(cb.id)) {
+							newId = cb.id.replace(/^nose-aromas/, 'palate-flavors');
+						} else {
+							const sanitized = String(value).toLowerCase().replace(/[^a-z0-9\-]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
+							newId = `palate-flavors-other-${level}-${sanitized}-${Date.now()}`;
+						}
+						//* console.log(' -> computed newId:', newId);
+
+						const existingByValue = Array.from(palateOtherContainer.querySelectorAll('input[type="checkbox"]')).find(x => x.value === value);
+						if (existingByValue) {
+							existingByValue.checked = true;
+							existingByValue.dataset.fromAroma = `${level}-${value}`;
+							//* console.log(' Found existingByValue in palate, checked and marked:', existingByValue.id);
+							return;
+						}
+
+						const newCheckbox = document.createElement('input');
+						newCheckbox.type = 'checkbox';
+						newCheckbox.id = newId;
+						newCheckbox.value = value;
+						newCheckbox.checked = true;
+						newCheckbox.style.display = 'none';
+						newCheckbox.classList.add('custom-other');
+						newCheckbox.dataset.fromAroma = `${level}-${value}`;
+
+						const newLabel = document.createElement('label');
+						newLabel.htmlFor = newId;
+						newLabel.textContent = value;
+						newLabel.classList.add('custom-other-label');
+
+						const aromaLabel = cb.nextElementSibling && cb.nextElementSibling.tagName === 'LABEL' ? cb.nextElementSibling : null;
+						if (aromaLabel) {
+							newLabel.style.cssText = aromaLabel.style.cssText || '';
+						} else {
+							newLabel.style.cssText = 'display:inline-block; border:1px solid var(--dark-green); background-color:var(--dark-green); color:#fff; max-width:150px; margin:3px; padding:5px 10px; text-align:center; cursor:pointer; border-radius:4pt;';
+						}
+
+						newCheckbox.addEventListener('change', function () {
+							if (!this.checked) {
+								const lbl = palateOtherContainer.querySelector(`label[for="${CSS.escape(this.id)}"]`);
+								if (lbl) lbl.remove();
+								this.remove();
+								//* console.log('palate dynamic item removed due to uncheck:', this.id);
+							}
+						});
+
+						const textInput = palateOtherContainer.querySelector('input[type="text"][placeholder="Other"]');
+						if (textInput) {
+							palateOtherContainer.insertBefore(newLabel, textInput);
+							palateOtherContainer.insertBefore(newCheckbox, textInput);
+							//* console.log('Inserted new palate items before text input:', newId, value);
+						} else {
+							palateOtherContainer.appendChild(newCheckbox);
+							palateOtherContainer.appendChild(newLabel);
+							//* console.log('Appended new palate items at end:', newId, value);
+						}
+					} catch (err) {
+						console.error('Error while copying dynamic aroma item:', err);
+					}
+				});
+
+				const aromaOtherInput = document.getElementById(`nose-aromas-other-text-${level}`);
+				const palateOtherInput = document.getElementById(`palate-flavors-other-text-${level}`);
+
+				//* console.log('aromaOtherInput (by id):', aromaOtherInput);
+				//* console.log('palateOtherInput (by id):', palateOtherInput);
+
+				if (aromaOtherInput && palateOtherInput) {
+					palateOtherInput.value = aromaOtherInput.value;
+					//* console.log(`Copied Other for ${level}: ${aromaOtherInput.value}`);
+				} else {
+					console.warn(`Cannot find Other input fields to copy for level: ${level} — aromaOtherInput:${!!aromaOtherInput} palateOtherInput:${!!palateOtherInput}`);
+				}
+
+
+			} else {
+				console.warn('Other containers not found for level:', level);
+			}
+
+			//* console.log(`Finished copying ${level} aromas to palate.`);
+		}
+
+
+	</script>
+
+
+</body>
+
+</html>
