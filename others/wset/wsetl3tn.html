@@ -1576,7 +1576,7 @@
 										value="wet wool">
 									<label for="nose-aromas-other-wetwool">wet wool</label>
 									<input type="text" id="nose-aromas-other-text-primary" name="nose-aromas-other-text"
-										placeholder="Other">
+										placeholder="Press Enter to add">
 								</div>
 							</div>
 						</div>
@@ -1703,7 +1703,7 @@
 						<div class="control-group-body">
 							<div class="control-group-body-grouping">
 								<input type="text" id="nose-aromas-other-text-secondary" name="nose-aromas-other-text"
-									placeholder="Other">
+									placeholder="Press Enter to add">
 							</div>
 						</div>
 					</div>
@@ -1908,7 +1908,7 @@
 						<div class="control-group-body">
 							<div class="control-group-body-grouping">
 								<input type="text" id="nose-aromas-other-text-tertiary" name="nose-aromas-other-text"
-									placeholder="Other">
+									placeholder="Press Enter to add">
 							</div>
 						</div>
 					</div>
@@ -2482,7 +2482,7 @@
 										name="palate-flavors-other[]" value="wet wool">
 									<label for="palate-flavors-other-wetwool">wet wool</label>
 									<input type="text" id="palate-flavors-other-text-primary"
-										name="palate-flavors-other-text" placeholder="Other">
+										name="palate-flavors-other-text" placeholder="Press Enter to add">
 								</div>
 							</div>
 						</div>
@@ -2610,7 +2610,7 @@
 						<div class="control-group-body">
 							<div class="control-group-body-grouping">
 								<input type="text" id=palate-flavors-other-text-secondary"
-									name="palate-flavors-other-text" placeholder="Other">
+									name="palate-flavors-other-text" placeholder="Press Enter to add">
 							</div>
 						</div>
 					</div>
@@ -2818,7 +2818,7 @@
 						<div class="control-group-body">
 							<div class="control-group-body-grouping">
 								<input type="text" id="palate-flavors-other-text-tertiary"
-									name="palate-flavors-other-text" placeholder="Other">
+									name="palate-flavors-other-text" placeholder="Press Enter to add">
 							</div>
 						</div>
 					</div>
@@ -3122,6 +3122,9 @@
 
 
 	<div id="footer">
+		<p> This is a static website hosted on GitHub Pages. <br>
+			There is no server, no database, and no tracking — your data never leaves your device.</p>
+
 		<p>This website is an independent learning project and has no official connection with the <a
 				href="https://www.wsetglobal.com/">Wine &amp; Spirit Education Trust</a>.
 			<br>
@@ -4382,7 +4385,7 @@
 		});
 
 
-		document.querySelectorAll('input[type="text"][placeholder="Other"]').forEach(input => {
+		document.querySelectorAll('input[type="text"][placeholder="Press Enter to add"]').forEach(input => {
 			input.addEventListener('keypress', handleOtherInput);
 		});
 
@@ -4527,7 +4530,7 @@
 							}
 						});
 
-						const textInput = palateOtherContainer.querySelector('input[type="text"][placeholder="Other"]');
+						const textInput = palateOtherContainer.querySelector('input[type="text"][placeholder="Press Enter to add"]');
 						if (textInput) {
 							palateOtherContainer.insertBefore(newLabel, textInput);
 							palateOtherContainer.insertBefore(newCheckbox, textInput);
