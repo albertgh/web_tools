@@ -209,20 +209,27 @@
 
 		.result-modal .result-tail-stack {
 			margin-top: 12px;
-			border-top: 1px solid var(--dark-green);
+			border-top: 2px solid var(--dark-green);
+			border-bottom: 2px solid var(--dark-green);
 			padding-top: 0;
+			padding-bottom: 0;
 		}
 
-		.result-modal .result-tail-stack .control-group:first-child {
+		.result-modal .result-tail-stack .control-group {
 			background-color: var(--light-green);
+			border-bottom: 1px solid var(--dark-green);
 		}
 
-		.result-modal .result-tail-stack .control-group:last-child {
-			border-bottom: none;
+		.result-modal .result-tail-stack .result-tail-group-first {
+			border-top: 0;
+		}
+
+		.result-modal .result-tail-stack .result-tail-group-last {
+			border-bottom: 0;
 		}
 
 		.result-modal .result-group-divider-after {
-			border-bottom-width: 2px;
+			border-bottom: 2px solid var(--dark-green);
 		}
 
 		.result-modal .result-subsection-aroma:last-of-type .control-group:last-child {
@@ -4083,6 +4090,14 @@
 					if (stackHasResult && stackClone.childElementCount) {
 						if (lastAppendedWasAromaBlock) {
 							stackClone.classList.add('result-tail-stack');
+							const firstGroup = stackClone.querySelector('.control-group');
+							const lastGroup = stackClone.querySelector('.control-group:last-of-type');
+							if (firstGroup) {
+								firstGroup.classList.add('result-tail-group-first');
+							}
+							if (lastGroup) {
+								lastGroup.classList.add('result-tail-group-last', 'keep-bottom-border');
+							}
 						}
 						sectionContainer.appendChild(stackClone);
 					}
