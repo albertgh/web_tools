@@ -232,6 +232,10 @@
 			border-bottom: 2px solid var(--dark-green);
 		}
 
+		.result-modal .result-group.result-force-bottom-thick {
+			border-bottom: 2px solid var(--dark-green);
+		}
+
 		.result-modal .result-subsection-aroma:last-of-type .control-group:last-child {
 			padding-bottom: 0;
 			margin-bottom: 0;
@@ -508,6 +512,10 @@
 			background-color: var(--light-green);
 			padding: 5px 10px;
 			border-bottom: 1px solid var(--dark-green);
+		}
+
+		.result-modal .result-group.result-force-bottom-thick {
+			border-bottom: 2px solid var(--dark-green) !important;
 		}
 
 		section>.control-group-stack>.control-group:last-child:not(.keep-bottom-border) {
@@ -4065,14 +4073,31 @@
 							return;
 						}
 						const stackElement = /** @type {Element} */ (stackChild);
-						if (stackElement.classList.contains('control-group')) {
-							const resultGroup = buildResultGroup(stackElement);
-							if (resultGroup) {
-								stackClone.appendChild(resultGroup);
-								hasContent = true;
-								stackHasResult = true;
-								lastStackResultGroup = resultGroup;
-							}
+				if (stackElement.classList.contains('control-group')) {
+					const resultGroup = buildResultGroup(stackElement);
+					if (resultGroup) {
+						const groupLabelText = normalizeWhitespace(
+							stackElement.querySelector(':scope > .control-group-label')?.textContent || ''
+						);
+						if (
+							sectionTitle &&
+							sectionTitle.toLowerCase() === 'nose' &&
+							groupLabelText === 'Intensity'
+						) {
+							resultGroup.classList.add('result-force-bottom-thick', 'keep-bottom-border');
+						}
+						if (
+							sectionTitle &&
+							sectionTitle.toLowerCase() === 'palate' &&
+							groupLabelText === 'Flavor Intensity'
+						) {
+							resultGroup.classList.add('result-force-bottom-thick', 'keep-bottom-border');
+						}
+						stackClone.appendChild(resultGroup);
+						hasContent = true;
+						stackHasResult = true;
+						lastStackResultGroup = resultGroup;
+					}
 						} else if (stackElement.classList.contains('control-group-divider')) {
 							if (lastStackResultGroup) {
 								lastStackResultGroup.classList.add('result-group-divider-after', 'keep-bottom-border');
@@ -4213,17 +4238,17 @@
 				groupLabelText = normalizeWhitespace(labelElement.textContent);
 			}
 
-				const groupContainer = document.createElement('div');
-				const originalGroupClasses = Array.from(group.classList || []);
-				const mergedClasses = new Set(['control-group', 'result-group']);
-				originalGroupClasses.forEach(cls => {
-					if (cls && cls !== 'control-group') {
-						mergedClasses.add(cls);
-					}
-				});
-				groupContainer.className = Array.from(mergedClasses).join(' ');
+			const groupContainer = document.createElement('div');
+			const originalGroupClasses = Array.from(group.classList || []);
+			const mergedClasses = new Set(['control-group', 'result-group']);
+			originalGroupClasses.forEach(cls => {
+				if (cls && cls !== 'control-group') {
+					mergedClasses.add(cls);
+				}
+			});
+			groupContainer.className = Array.from(mergedClasses).join(' ');
 
-			const labelContainer = document.createElement('div');
+		const labelContainer = document.createElement('div');
 			labelContainer.className = 'control-group-label';
 			const labelParagraph = document.createElement('p');
 			if (groupLabelHTML && /<[^>]+>/.test(groupLabelHTML)) {
