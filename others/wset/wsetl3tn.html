@@ -207,6 +207,24 @@
 			margin-bottom: 0;
 		}
 
+		.result-modal .result-tail-stack {
+			margin-top: 12px;
+			border-top: 1px solid var(--dark-green);
+			padding-top: 0;
+		}
+
+		.result-modal .result-tail-stack .control-group:first-child {
+			background-color: var(--light-green);
+		}
+
+		.result-modal .result-tail-stack .control-group:last-child {
+			border-bottom: none;
+		}
+
+		.result-modal .result-group-divider-after {
+			border-bottom-width: 2px;
+		}
+
 		.result-modal .result-subsection-aroma:last-of-type .control-group:last-child {
 			padding-bottom: 0;
 			margin-bottom: 0;
@@ -3506,32 +3524,38 @@
 
 		function collectRowsFromSection(section) {
 			const rows = [];
-			const stacks = Array.from(section.querySelectorAll(':scope > .control-group-stack'));
-			stacks.forEach(stack => {
-				const groups = Array.from(stack.querySelectorAll(':scope > .control-group'));
-				groups.forEach(group => {
-					rows.push(...collectRowsFromGroup(group));
-				});
-			});
+			let hasAromaHeadingRow = false;
 
-			const topHeading = section.querySelector(':scope > .aroma-flavor-heading');
-			if (topHeading) {
-				const headingText = normalizeWhitespace(topHeading.querySelector('h3')?.textContent || '');
-				if (headingText) {
-					rows.push([headingText, '']);
+			const children = Array.from(section.children || []);
+			children.forEach(child => {
+				if (child.classList?.contains('control-group-stack')) {
+					const groups = Array.from(child.querySelectorAll(':scope > .control-group'));
+					groups.forEach(group => {
+						rows.push(...collectRowsFromGroup(group));
+					});
+					return;
 				}
-				const aromaSections = Array.from(section.querySelectorAll(':scope > .aroma-flavor-section'));
-				aromaSections.forEach(aromaSection => {
-					const subHeading = normalizeWhitespace(aromaSection.querySelector(':scope > .aroma-flavor-heading h4')?.textContent || '');
+
+				if (child.classList?.contains('aroma-flavor-heading')) {
+					const headingText = normalizeWhitespace(child.querySelector('h3')?.textContent || '');
+					if (headingText && !hasAromaHeadingRow) {
+						rows.push([headingText, '']);
+						hasAromaHeadingRow = true;
+					}
+					return;
+				}
+
+				if (child.classList?.contains('aroma-flavor-section')) {
+					const subHeading = normalizeWhitespace(child.querySelector(':scope > .aroma-flavor-heading h4')?.textContent || '');
 					if (subHeading) {
 						rows.push([subHeading, '']);
 					}
-					const aromaGroups = Array.from(aromaSection.querySelectorAll(':scope > .aroma-flavor-body > .control-group'));
+					const aromaGroups = Array.from(child.querySelectorAll(':scope > .aroma-flavor-body > .control-group'));
 					aromaGroups.forEach(group => {
 						rows.push(...collectRowsFromGroup(group));
 					});
-				});
-			}
+				}
+			});
 
 			return rows;
 		}
@@ -4009,40 +4033,96 @@
 				sectionContainer.appendChild(title);
 			}
 
-			const stacks = Array.from(originalSection.querySelectorAll(':scope > .control-group-stack'));
-			stacks.forEach(stack => {
-				const groups = Array.from(stack.querySelectorAll(':scope > .control-group'));
-				groups.forEach(group => {
-					const resultGroup = buildResultGroup(group);
-					if (resultGroup) {
-						sectionContainer.appendChild(resultGroup);
-						hasContent = true;
-					}
-				});
-			});
-
-			const topAromaHeading = originalSection.querySelector(':scope > .aroma-flavor-heading');
+			const children = Array.from(originalSection.children || []);
 			let topAromaHeadingClone = null;
-			if (topAromaHeading) {
-				topAromaHeadingClone = topAromaHeading.cloneNode(true);
-				const description = topAromaHeadingClone.querySelector('p');
-				if (description) {
-					description.remove();
-				}
-			}
 			let appendedAromaHeading = false;
+			let lastAppendedWasAromaBlock = false;
 
-			const aromaSections = Array.from(originalSection.querySelectorAll(':scope > .aroma-flavor-section'));
-			aromaSections.forEach(aromaSection => {
-				const resultSubsection = buildResultSubsection(aromaSection);
-				if (resultSubsection) {
-					if (!appendedAromaHeading && topAromaHeadingClone) {
-						topAromaHeadingClone.classList.add('result-subheading');
-						sectionContainer.appendChild(topAromaHeadingClone);
-						appendedAromaHeading = true;
+			children.forEach(child => {
+				if (!child || child.nodeType !== Node.ELEMENT_NODE) {
+					return;
+				}
+				const elementChild = /** @type {Element} */ (child);
+
+				if (elementChild.classList.contains('control-group-stack')) {
+					const stackClone = elementChild.cloneNode(false);
+					stackClone.className = elementChild.className || 'control-group-stack';
+					stackClone.removeAttribute('id');
+
+					const stackChildren = Array.from(elementChild.children || []);
+					let stackHasResult = false;
+					let lastStackResultGroup = null;
+
+					stackChildren.forEach(stackChild => {
+						if (!stackChild || stackChild.nodeType !== Node.ELEMENT_NODE) {
+							return;
+						}
+						const stackElement = /** @type {Element} */ (stackChild);
+						if (stackElement.classList.contains('control-group')) {
+							const resultGroup = buildResultGroup(stackElement);
+							if (resultGroup) {
+								stackClone.appendChild(resultGroup);
+								hasContent = true;
+								stackHasResult = true;
+								lastStackResultGroup = resultGroup;
+							}
+						} else if (stackElement.classList.contains('control-group-divider')) {
+							if (lastStackResultGroup) {
+								lastStackResultGroup.classList.add('result-group-divider-after', 'keep-bottom-border');
+								lastStackResultGroup = null;
+							}
+					} else if (stackElement.tagName === 'P') {
+						const spacerText = normalizeWhitespace(stackElement.textContent || '');
+						if (spacerText.length) {
+							stackClone.appendChild(stackElement.cloneNode(true));
+						}
+						lastStackResultGroup = null;
 					}
-					sectionContainer.appendChild(resultSubsection);
-					hasContent = true;
+					});
+
+					if (stackHasResult && stackClone.childElementCount) {
+						if (lastAppendedWasAromaBlock) {
+							stackClone.classList.add('result-tail-stack');
+						}
+						sectionContainer.appendChild(stackClone);
+					}
+					lastAppendedWasAromaBlock = false;
+					return;
+				}
+
+				if (elementChild.classList.contains('aroma-flavor-heading')) {
+					if (!topAromaHeadingClone) {
+						topAromaHeadingClone = elementChild.cloneNode(true);
+						const description = topAromaHeadingClone.querySelector('p');
+						if (description) {
+							description.remove();
+						}
+					}
+					return;
+				}
+
+				if (elementChild.classList.contains('aroma-flavor-section')) {
+					const resultSubsection = buildResultSubsection(elementChild);
+					if (resultSubsection) {
+						if (!appendedAromaHeading && topAromaHeadingClone) {
+							topAromaHeadingClone.classList.add('result-subheading');
+							sectionContainer.appendChild(topAromaHeadingClone);
+							appendedAromaHeading = true;
+						}
+						sectionContainer.appendChild(resultSubsection);
+						hasContent = true;
+						lastAppendedWasAromaBlock = true;
+					}
+					return;
+				}
+
+				if (elementChild.tagName === 'P') {
+					const text = normalizeWhitespace(elementChild.textContent || '');
+					if (text.length) {
+						sectionContainer.appendChild(elementChild.cloneNode(true));
+					}
+					lastAppendedWasAromaBlock = false;
+					return;
 				}
 			});
 
@@ -4118,8 +4198,15 @@
 				groupLabelText = normalizeWhitespace(labelElement.textContent);
 			}
 
-			const groupContainer = document.createElement('div');
-			groupContainer.className = 'control-group result-group';
+				const groupContainer = document.createElement('div');
+				const originalGroupClasses = Array.from(group.classList || []);
+				const mergedClasses = new Set(['control-group', 'result-group']);
+				originalGroupClasses.forEach(cls => {
+					if (cls && cls !== 'control-group') {
+						mergedClasses.add(cls);
+					}
+				});
+				groupContainer.className = Array.from(mergedClasses).join(' ');
 
 			const labelContainer = document.createElement('div');
 			labelContainer.className = 'control-group-label';
