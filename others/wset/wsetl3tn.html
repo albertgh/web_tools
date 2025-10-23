@@ -3437,6 +3437,10 @@
 		}
 
 		let html2CanvasLoader = null;
+		let exportPreparationPromise = null;
+		let preparedExportDataUrl = null;
+		let exportPreparationToken = 0;
+		let exportButtonDefaultLabel = '';
 
 		function loadScriptOnce(url) {
 			if (html2CanvasLoader) {
@@ -3462,15 +3466,7 @@
 			return loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
 		}
 
-	async function exportResultAsJpg() {
-		const modal = document.querySelector('.result-modal');
-		if (!modal) {
-			throw new Error('Result modal not found.');
-		}
-
-		// Open the export window synchronously to avoid mobile popup blockers after awaits.
-		const preOpenedWindow = window.open('', '_blank');
-
+	async function captureResultAsDataUrl(modal) {
 		const html2canvas = await ensureHtml2Canvas();
 		const targetLayoutWidth = getExportContentWidth();
 
@@ -3511,65 +3507,136 @@
 				scale: captureScale
 			});
 
-			const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
-			if (preOpenedWindow) {
-				preOpenedWindow.document.open();
-				preOpenedWindow.document.write(`
-					<html>
-					<head>
-						<title>WSET Level 3 Tasting Notes Image</title>
-						<style>
-							body {
-								background: #f8f8f8;
-								display: flex;
-								flex-direction: column;
-								align-items: center;
-								justify-content: center;
-								min-height: 100vh;
-								margin: 0;
-								font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-							}
-							.hint {
-								color: #333;
-								font-size: clamp(2rem, 2.5vw, 4rem);
-								margin-bottom: 1rem;
-								text-align: center;
-							}
-							img {
-								max-width: 90%;
-								height: auto;
-								border: 1px solid #ccc;
-								box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-								background: white;
-							}
-						</style>
-					</head>
-					<body>
-						<p> </p>
-						</br>
-						<div class="hint">💾 Right-click or long-press the image below to save it to your device.</div>
-						</br>
-						</br>
-
-						<img src="${dataUrl}" alt="Exported tasting note">
-					</body>
-					</html>
-				`);
-				preOpenedWindow.document.close();
-			} else {
-				const link = document.createElement('a');
-				link.href = dataUrl;
-				link.download = `wset-tasting-${getTimestampSlug()}.jpg`;
-				link.click();
-			}
-		} catch (error) {
-			if (preOpenedWindow && !preOpenedWindow.closed) {
-				preOpenedWindow.close();
-			}
-			throw error;
+			return canvas.toDataURL('image/jpeg', 0.92);
 		} finally {
 			cloneContainer.remove();
 		}
+	}
+
+	function resetExportPreparation() {
+		exportPreparationToken += 1;
+		exportPreparationPromise = null;
+		preparedExportDataUrl = null;
+		if (exportButtonDefaultLabel && exportJpgButton) {
+			exportJpgButton.disabled = false;
+			exportJpgButton.textContent = exportButtonDefaultLabel;
+		}
+	}
+
+	function startExportPreparation() {
+		const modal = document.querySelector('.result-modal');
+		if (!modal || !exportJpgButton) {
+			return;
+		}
+
+		if (!exportButtonDefaultLabel) {
+			exportButtonDefaultLabel = exportJpgButton.textContent || 'Export JPG';
+		}
+
+		const currentToken = ++exportPreparationToken;
+		preparedExportDataUrl = null;
+
+		exportJpgButton.disabled = true;
+		exportJpgButton.textContent = 'Preparing…';
+
+		exportPreparationPromise = (async () => {
+			try {
+				const dataUrl = await captureResultAsDataUrl(modal);
+				return { dataUrl };
+			} catch (error) {
+				console.error('Failed to prepare export image:', error);
+				return { error };
+			}
+		})();
+
+		exportPreparationPromise.then(result => {
+			if (currentToken !== exportPreparationToken) {
+				return;
+			}
+			if (result?.dataUrl) {
+				preparedExportDataUrl = result.dataUrl;
+			}
+			exportJpgButton.disabled = false;
+			exportJpgButton.textContent = exportButtonDefaultLabel;
+		}).catch(error => {
+			if (currentToken !== exportPreparationToken) {
+				return;
+			}
+			console.error('Unexpected error while preparing export:', error);
+			exportJpgButton.disabled = false;
+			exportJpgButton.textContent = exportButtonDefaultLabel;
+		});
+	}
+
+	function openDataUrlInNewTab(dataUrl) {
+		const newWindow = window.open('', '_blank');
+		if (newWindow) {
+			newWindow.document.open();
+			newWindow.document.write(`
+				<html>
+				<head>
+					<title>WSET Level 3 Tasting Notes Image</title>
+					<style>
+						body {
+							background: #f8f8f8;
+							display: flex;
+							flex-direction: column;
+							align-items: center;
+							justify-content: center;
+							min-height: 100vh;
+							margin: 0;
+							font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+						}
+						.hint {
+							color: #333;
+							font-size: clamp(2rem, 2.5vw, 4rem);
+							margin-bottom: 1rem;
+							text-align: center;
+						}
+						img {
+							max-width: 90%;
+							height: auto;
+							border: 1px solid #ccc;
+							box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+							background: white;
+						}
+					</style>
+				</head>
+				<body>
+					<p> </p>
+					</br>
+					<div class="hint">💾 Right-click or long-press the image below to save it to your device.</div>
+					</br>
+					</br>
+
+					<img src="${dataUrl}" alt="Exported tasting note">
+				</body>
+				</html>
+			`);
+			newWindow.document.close();
+		} else {
+			const link = document.createElement('a');
+			link.href = dataUrl;
+			link.download = `wset-tasting-${getTimestampSlug()}.jpg`;
+			link.click();
+		}
+	}
+
+	async function exportResultAsJpg() {
+		const modal = document.querySelector('.result-modal');
+		if (!modal) {
+			throw new Error('Result modal not found.');
+		}
+
+		if (!preparedExportDataUrl) {
+			if (!exportPreparationPromise) {
+				startExportPreparation();
+			}
+			alert('Preparing image… please try again in a moment.');
+			return;
+		}
+
+		openDataUrlInNewTab(preparedExportDataUrl);
 	}
 
 		function getTimestampSlug() {
@@ -4114,6 +4181,8 @@
 		modalTimestamp.textContent = buildTimestampText();
 		lockBodyScroll();
 		modalBackdrop.hidden = false;
+		resetExportPreparation();
+		startExportPreparation();
 		closeModalButton.focus();
 	}
 
@@ -4121,6 +4190,7 @@
 			if (summaryModalBackdrop && !summaryModalBackdrop.hidden) {
 				closeSummaryModal();
 			}
+		resetExportPreparation();
 		modalBackdrop.hidden = true;
 		unlockBodyScroll();
 		generateButton.focus();
