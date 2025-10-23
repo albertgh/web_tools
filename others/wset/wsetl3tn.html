@@ -3319,8 +3319,41 @@
 		const copySummaryButton = document.getElementById('copySummaryButton');
 		const closeSummaryButton = document.getElementById('closeSummaryButton');
 
-		const EXPORT_CONTENT_WIDTH_FALLBACK = 860;
-		const prioritizedSectionTitles = ['Blind Deduction', 'Wine Identity'];
+	const EXPORT_CONTENT_WIDTH_FALLBACK = 860;
+	const prioritizedSectionTitles = ['Blind Deduction', 'Wine Identity'];
+
+	let bodyScrollLockDepth = 0;
+	let bodyScrollLockOffset = 0;
+
+	function lockBodyScroll() {
+		if (bodyScrollLockDepth === 0) {
+			bodyScrollLockOffset = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+			document.body.style.position = 'fixed';
+			document.body.style.top = `-${bodyScrollLockOffset}px`;
+			document.body.style.left = '0';
+			document.body.style.right = '0';
+			document.body.style.width = '100%';
+			document.body.classList.add('modal-open');
+		}
+		bodyScrollLockDepth += 1;
+	}
+
+	function unlockBodyScroll() {
+		if (bodyScrollLockDepth === 0) {
+			return;
+		}
+		bodyScrollLockDepth -= 1;
+		if (bodyScrollLockDepth === 0) {
+			document.body.classList.remove('modal-open');
+			document.body.style.position = '';
+			document.body.style.top = '';
+			document.body.style.left = '';
+			document.body.style.right = '';
+			document.body.style.width = '';
+			window.scrollTo(0, bodyScrollLockOffset);
+			bodyScrollLockOffset = 0;
+		}
+	}
 
 		generateButton.addEventListener('click', () => {
 			openResultModal();
@@ -3741,7 +3774,11 @@
 			}
 			const summaryText = buildSummaryText();
 			summaryContent.textContent = summaryText || 'No descriptive data available.';
+			const wasHidden = summaryModalBackdrop.hidden;
 			summaryModalBackdrop.hidden = false;
+			if (wasHidden) {
+				lockBodyScroll();
+			}
 			if (copySummaryButton) {
 				copySummaryButton.textContent = 'Copy';
 				copySummaryButton.focus();
@@ -3749,10 +3786,11 @@
 		}
 
 		function closeSummaryModal() {
-			if (!summaryModalBackdrop) {
+			if (!summaryModalBackdrop || summaryModalBackdrop.hidden) {
 				return;
 			}
 			summaryModalBackdrop.hidden = true;
+			unlockBodyScroll();
 			exportSummaryButton?.focus();
 		}
 
@@ -4050,20 +4088,20 @@
 				modalSectionsContainer.appendChild(emptyMessage);
 			}
 
-			modalTimestamp.textContent = buildTimestampText();
-			modalBackdrop.hidden = false;
-			document.body.classList.add('modal-open');
-			closeModalButton.focus();
-		}
+		modalTimestamp.textContent = buildTimestampText();
+		lockBodyScroll();
+		modalBackdrop.hidden = false;
+		closeModalButton.focus();
+	}
 
-		function closeResultModal() {
+	function closeResultModal() {
 			if (summaryModalBackdrop && !summaryModalBackdrop.hidden) {
 				closeSummaryModal();
 			}
-			modalBackdrop.hidden = true;
-			document.body.classList.remove('modal-open');
-			generateButton.focus();
-		}
+		modalBackdrop.hidden = true;
+		unlockBodyScroll();
+		generateButton.focus();
+	}
 
 		function buildTimestampText() {
 			const now = new Date();
