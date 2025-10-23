@@ -3468,6 +3468,9 @@
 			throw new Error('Result modal not found.');
 		}
 
+		// Open the export window synchronously to avoid mobile popup blockers after awaits.
+		const preOpenedWindow = window.open('', '_blank');
+
 		const html2canvas = await ensureHtml2Canvas();
 		const targetLayoutWidth = getExportContentWidth();
 
@@ -3509,9 +3512,9 @@
 			});
 
 			const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
-			const newWindow = window.open();
-			if (newWindow) {
-				newWindow.document.write(`
+			if (preOpenedWindow) {
+				preOpenedWindow.document.open();
+				preOpenedWindow.document.write(`
 					<html>
 					<head>
 						<title>WSET Level 3 Tasting Notes Image</title>
@@ -3552,12 +3555,18 @@
 					</body>
 					</html>
 				`);
+				preOpenedWindow.document.close();
 			} else {
 				const link = document.createElement('a');
 				link.href = dataUrl;
 				link.download = `wset-tasting-${getTimestampSlug()}.jpg`;
 				link.click();
 			}
+		} catch (error) {
+			if (preOpenedWindow && !preOpenedWindow.closed) {
+				preOpenedWindow.close();
+			}
+			throw error;
 		} finally {
 			cloneContainer.remove();
 		}
