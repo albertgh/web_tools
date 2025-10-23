@@ -532,6 +532,43 @@
 			box-shadow: none;
 		}
 
+		.result-modal-export-clone .control-group {
+			flex-direction: row !important;
+		}
+
+		.result-modal-export-clone .control-group-label,
+		.result-modal-export-clone .control-group-label-with-sublabels,
+		.result-modal-export-clone .control-group-body,
+		.result-modal-export-clone .control-group-body-grouping-label,
+		.result-modal-export-clone .control-group-body-grouping-body,
+		.result-modal-export-clone .aroma-flavor-body .control-group .control-group-label {
+			width: auto;
+		}
+
+		.result-modal-export-clone .control-group-label {
+			width: 200px !important;
+		}
+
+		.result-modal-export-clone .control-group-body-grouping {
+			flex-direction: row !important;
+		}
+
+		.result-modal-export-clone .control-group-body-grouping-label {
+			width: 90px !important;
+			text-align: right;
+			padding: 0 10px 0 0;
+		}
+
+		.result-modal-export-clone .control-group-body-grouping-body input[type="radio"]+label,
+		.result-modal-export-clone .control-group-body-grouping-body input[type="checkbox"]+label {
+			max-width: var(--custom-option-max-width);
+			margin: var(--custom-option-margin);
+		}
+
+		.result-modal-export-clone .radio-separator {
+			display: inline !important;
+		}
+
 		.result-modal .result-group.result-force-bottom-thick {
 			border-bottom: 2px solid var(--dark-green) !important;
 		}
@@ -3378,115 +3415,106 @@
 			return loadScriptOnce('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
 		}
 
-		async function exportResultAsJpg() {
-			const modal = document.querySelector('.result-modal');
-			if (!modal) {
-				throw new Error('Result modal not found.');
-			}
-
-			const forcedWidthClass = 'exporting-desktop';
-			const htmlElement = document.documentElement;
-			htmlElement.classList.add(forcedWidthClass);
-
-			const html2canvas = await ensureHtml2Canvas();
-
-			const actionBar = modal.querySelector('.result-modal-actions');
-			const originalActionDisplay = actionBar ? actionBar.style.display : '';
-			if (actionBar) {
-				actionBar.style.display = 'none';
-			}
-
-			const targetLayoutWidth = getExportContentWidth();
-			const previousBodyWidth = document.body.style.width;
-			const previousBodyMaxWidth = document.body.style.maxWidth;
-			const previousModalWidth = modal.style.width;
-			const previousModalMaxWidth = modal.style.maxWidth;
-			const previousModalMinWidth = modal.style.minWidth;
-
-			document.body.style.width = `${targetLayoutWidth}px`;
-			document.body.style.maxWidth = `${targetLayoutWidth}px`;
-			modal.style.width = `${targetLayoutWidth}px`;
-			modal.style.maxWidth = `${targetLayoutWidth}px`;
-			modal.style.minWidth = `${targetLayoutWidth}px`;
-
-			const originalScrollTop = modal.scrollTop;
-			modal.scrollTop = 0;
-
-			try {
-				const captureScale = Math.max(2, window.devicePixelRatio || 1);
-				const canvas = await html2canvas(modal, {
-					backgroundColor: '#ffffff',
-					logging: false,
-					useCORS: true,
-					windowWidth: targetLayoutWidth,
-					windowHeight: modal.scrollHeight,
-					width: targetLayoutWidth,
-					scale: captureScale
-				});
-
-				const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
-				const newWindow = window.open();
-				if (newWindow) {
-					newWindow.document.write(`
-						<html>
-						<head>
-							<title>WSET Level 3 Tasting Notes Image</title>
-							<style>
-								body {
-									background: #f8f8f8;
-									display: flex;
-									flex-direction: column;
-									align-items: center;
-									justify-content: center;
-									min-height: 100vh;
-									margin: 0;
-									font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-								}
-								.hint {
-									color: #333;
-									font-size: clamp(2rem, 2.5vw, 4rem);
-									margin-bottom: 1rem;
-									text-align: center;
-								}
-								img {
-									max-width: 90%;
-									height: auto;
-									border: 1px solid #ccc;
-									box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-									background: white;
-								}
-							</style>
-						</head>
-						<body>
-							<p> </p>
-							</br>
-							<div class="hint">💾 Right-click or long-press the image below to save it to your device.</div>
-							</br>
-							</br>
-
-							<img src="${dataUrl}" alt="Exported tasting note">
-						</body>
-						</html>
-					`);
-				} else {
-					const link = document.createElement('a');
-					link.href = dataUrl;
-					link.download = `wset-tasting-${getTimestampSlug()}.jpg`;
-					link.click();
-				}
-			} finally {
-				if (actionBar) {
-					actionBar.style.display = originalActionDisplay;
-				}
-				htmlElement.classList.remove(forcedWidthClass);
-				document.body.style.width = previousBodyWidth;
-				document.body.style.maxWidth = previousBodyMaxWidth;
-				modal.style.width = previousModalWidth;
-				modal.style.maxWidth = previousModalMaxWidth;
-				modal.style.minWidth = previousModalMinWidth;
-				modal.scrollTop = originalScrollTop;
-			}
+	async function exportResultAsJpg() {
+		const modal = document.querySelector('.result-modal');
+		if (!modal) {
+			throw new Error('Result modal not found.');
 		}
+
+		const html2canvas = await ensureHtml2Canvas();
+		const targetLayoutWidth = getExportContentWidth();
+
+		const cloneContainer = document.createElement('div');
+		cloneContainer.style.position = 'fixed';
+		cloneContainer.style.top = '0';
+		cloneContainer.style.left = '0';
+		cloneContainer.style.pointerEvents = 'none';
+		cloneContainer.style.opacity = '0';
+		cloneContainer.style.zIndex = '-1';
+
+		const clone = modal.cloneNode(true);
+		clone.classList.add('result-modal-export-clone');
+		clone.style.width = `${targetLayoutWidth}px`;
+		clone.style.maxWidth = `${targetLayoutWidth}px`;
+		clone.style.minWidth = `${targetLayoutWidth}px`;
+		clone.style.margin = '0 auto';
+
+		const cloneActionBar = clone.querySelector('.result-modal-actions');
+		if (cloneActionBar) {
+			cloneActionBar.remove();
+		}
+
+		cloneContainer.appendChild(clone);
+		document.body.appendChild(cloneContainer);
+
+		await new Promise(requestAnimationFrame);
+
+		try {
+			const captureScale = Math.max(2, window.devicePixelRatio || 1);
+			const canvas = await html2canvas(clone, {
+				backgroundColor: '#ffffff',
+				logging: false,
+				useCORS: true,
+				windowWidth: targetLayoutWidth,
+				windowHeight: clone.scrollHeight,
+				width: targetLayoutWidth,
+				scale: captureScale
+			});
+
+			const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+			const newWindow = window.open();
+			if (newWindow) {
+				newWindow.document.write(`
+					<html>
+					<head>
+						<title>WSET Level 3 Tasting Notes Image</title>
+						<style>
+							body {
+								background: #f8f8f8;
+								display: flex;
+								flex-direction: column;
+								align-items: center;
+								justify-content: center;
+								min-height: 100vh;
+								margin: 0;
+								font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+							}
+							.hint {
+								color: #333;
+								font-size: clamp(2rem, 2.5vw, 4rem);
+								margin-bottom: 1rem;
+								text-align: center;
+							}
+							img {
+								max-width: 90%;
+								height: auto;
+								border: 1px solid #ccc;
+								box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+								background: white;
+							}
+						</style>
+					</head>
+					<body>
+						<p> </p>
+						</br>
+						<div class="hint">💾 Right-click or long-press the image below to save it to your device.</div>
+						</br>
+						</br>
+
+						<img src="${dataUrl}" alt="Exported tasting note">
+					</body>
+					</html>
+				`);
+			} else {
+				const link = document.createElement('a');
+				link.href = dataUrl;
+				link.download = `wset-tasting-${getTimestampSlug()}.jpg`;
+				link.click();
+			}
+		} finally {
+			cloneContainer.remove();
+		}
+	}
 
 		function getTimestampSlug() {
 			const now = new Date();
