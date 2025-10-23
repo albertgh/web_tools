@@ -3470,36 +3470,6 @@
 
 		// Open the export window synchronously to avoid mobile popup blockers after awaits.
 		const preOpenedWindow = window.open('', '_blank');
-		if (preOpenedWindow) {
-			preOpenedWindow.document.open();
-			preOpenedWindow.document.write(`
-				<html>
-				<head>
-					<title>WSET Level 3 Tasting Notes Image</title>
-					<style>
-						body {
-							background: #f8f8f8;
-							display: flex;
-							align-items: center;
-							justify-content: center;
-							min-height: 100vh;
-							margin: 0;
-							font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-							color: #333;
-						}
-						.loading {
-							font-size: clamp(1.5rem, 2vw, 3rem);
-							text-align: center;
-						}
-					</style>
-				</head>
-				<body>
-					<div class="loading">Loading image…</div>
-				</body>
-				</html>
-			`);
-			preOpenedWindow.document.close();
-		}
 
 		const html2canvas = await ensureHtml2Canvas();
 		const targetLayoutWidth = getExportContentWidth();
@@ -3529,27 +3499,27 @@
 
 		await new Promise(requestAnimationFrame);
 
-			try {
-				const captureScale = Math.max(2, window.devicePixelRatio || 1);
-				const canvas = await html2canvas(clone, {
-					backgroundColor: '#ffffff',
-					logging: false,
-					useCORS: true,
-					windowWidth: targetLayoutWidth,
-					windowHeight: clone.scrollHeight,
-					width: targetLayoutWidth,
-					scale: captureScale
-				});
+		try {
+			const captureScale = Math.max(2, window.devicePixelRatio || 1);
+			const canvas = await html2canvas(clone, {
+				backgroundColor: '#ffffff',
+				logging: false,
+				useCORS: true,
+				windowWidth: targetLayoutWidth,
+				windowHeight: clone.scrollHeight,
+				width: targetLayoutWidth,
+				scale: captureScale
+			});
 
-				const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
-				if (preOpenedWindow) {
-					preOpenedWindow.document.open();
-					preOpenedWindow.document.write(`
-						<html>
-						<head>
-							<title>WSET Level 3 Tasting Notes Image</title>
-							<style>
-								body {
+			const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+			if (preOpenedWindow) {
+				preOpenedWindow.document.open();
+				preOpenedWindow.document.write(`
+					<html>
+					<head>
+						<title>WSET Level 3 Tasting Notes Image</title>
+						<style>
+							body {
 								background: #f8f8f8;
 								display: flex;
 								flex-direction: column;
@@ -3581,50 +3551,22 @@
 						</br>
 						</br>
 
-							<img src="${dataUrl}" alt="Exported tasting note">
-						</body>
-						</html>
-					`);
-					preOpenedWindow.document.close();
-				} else {
-					const link = document.createElement('a');
-					link.href = dataUrl;
-					link.download = `wset-tasting-${getTimestampSlug()}.jpg`;
-					link.click();
-				}
-			} catch (error) {
-				if (preOpenedWindow && !preOpenedWindow.closed) {
-					preOpenedWindow.document.open();
-					preOpenedWindow.document.write(`
-						<html>
-						<head>
-							<title>WSET Level 3 Tasting Notes Image</title>
-							<style>
-								body {
-									background: #f8f8f8;
-									display: flex;
-									align-items: center;
-									justify-content: center;
-									min-height: 100vh;
-									margin: 0;
-									font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-									color: #333;
-									padding: 20px;
-									text-align: center;
-								}
-								.error {
-									max-width: 480px;
-								}
-							</style>
-						</head>
-						<body>
-							<div class="error">Sorry, we were unable to generate the image. Please close this tab and try exporting again.</div>
-						</body>
-						</html>
-					`);
-					preOpenedWindow.document.close();
-				}
-				throw error;
+						<img src="${dataUrl}" alt="Exported tasting note">
+					</body>
+					</html>
+				`);
+				preOpenedWindow.document.close();
+			} else {
+				const link = document.createElement('a');
+				link.href = dataUrl;
+				link.download = `wset-tasting-${getTimestampSlug()}.jpg`;
+				link.click();
+			}
+		} catch (error) {
+			if (preOpenedWindow && !preOpenedWindow.closed) {
+				preOpenedWindow.close();
+			}
+			throw error;
 		} finally {
 			cloneContainer.remove();
 		}
