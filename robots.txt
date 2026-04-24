@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://albertgh.github.io/web_tools/sitemap.xml
