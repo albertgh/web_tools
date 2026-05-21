@@ -298,6 +298,51 @@
 		}
 		input[type="text"]:focus { outline: medium solid var(--dark-green); }
 
+		textarea.wine-notes-input {
+			display: block;
+			font-family: Helvetica, Arial, sans-serif;
+			font-size: 15px;
+			line-height: 1.5;
+			color: var(--text-color);
+			border: 1px solid var(--dark-green);
+			border-radius: 0;
+			background-color: #fff;
+			width: 100%;
+			box-sizing: border-box;
+			min-height: 120px;
+			resize: vertical;
+			padding: 8px 10px;
+			margin: 0;
+		}
+		textarea.wine-notes-input:focus { outline: medium solid var(--dark-green); }
+
+		/* Wine Notes section: textarea sits inside a control-group-stack
+		   so it inherits the same zebra-stripe look as every other section. */
+		.wine-notes-body {
+			width: 100%;
+			padding: 10px;
+		}
+
+		/* Export + Reset button row */
+		.form-actions {
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			margin-top: 10px;
+		}
+		.form-actions .spacer { flex-grow: 1; }
+		.form-actions .reset-button { background-color: var(--garnet); }
+		.form-actions .reset-button:hover { background-color: var(--dark-garnet); }
+
+		/* In the result modal, show the notes as a preformatted block. */
+		.result-notes-block {
+			white-space: pre-wrap;
+			font-size: 15px;
+			line-height: 1.5;
+			padding: 10px;
+			background-color: #fff;
+		}
+
 		input[type="submit"], button {
 			font-size: 16px;
 			font-weight: bold;
@@ -622,7 +667,11 @@
 
 	<form id="tastingForm" method="post" action="" onsubmit="return false;">
 		<!-- populated by renderForm() -->
-		<button type="button" id="generateButton">Export</button>
+		<div class="form-actions">
+			<button type="button" id="generateButton">Export</button>
+			<div class="spacer"></div>
+			<button type="button" id="resetButton" class="reset-button">Reset</button>
+		</div>
 	</form>
 
 	<div id="footer">
@@ -858,6 +907,8 @@ const TASTING_SCHEMA = [
 		groups: [
 			{ kind: 'text', name: 'tasting-sample-number', label: 'Tasting Sample No.', placeholder: 'e.g. 1 or A01' },
 			{ kind: 'text', name: 'guess-grape',   label: 'Grape Variety(s)',       placeholder: 'e.g. Chardonnay, Pinot Noir' },
+			{ kind: 'text', name: 'guess-abv',     label: 'ABV %',                  placeholder: 'e.g. 13.5%' },
+			{ kind: 'text', name: 'guess-vintage', label: 'Vintage',                placeholder: 'e.g. 2019' },
 			{ kind: 'text', name: 'guess-country', label: 'Country',                placeholder: 'e.g. France, Italy' },
 			{ kind: 'text', name: 'guess-region',  label: 'Region',                 placeholder: 'e.g. Burgundy, Barolo' },
 			{ kind: 'text', name: 'guess-winery',  label: 'Producer / Winery',      placeholder: 'e.g. Domaine de la Romanée-Conti, Giacomo Conterno Monfortino' },
@@ -870,13 +921,24 @@ const TASTING_SCHEMA = [
 	{
 		title: 'Wine Identity',
 		groups: [
-			{ kind: 'text', name: 'identity-vintage', label: 'Vintage',                placeholder: 'e.g. 2019' },
 			{ kind: 'text', name: 'identity-grape',   label: 'Grape Variety(s)',       placeholder: 'Actual Grape Variety(s)' },
+			{ kind: 'text', name: 'identity-abv',     label: 'ABV %',                  placeholder: 'Actual ABV %' },
+			{ kind: 'text', name: 'identity-vintage', label: 'Vintage',                placeholder: 'Actual Vintage' },
 			{ kind: 'text', name: 'identity-country', label: 'Country',                placeholder: 'Actual Country' },
 			{ kind: 'text', name: 'identity-region',  label: 'Region',                 placeholder: 'Actual Region' },
 			{ kind: 'text', name: 'identity-winery',  label: 'Producer / Winery',      placeholder: 'Actual Producer / Winery' },
 			{ kind: 'text', name: 'identity-climate', label: 'Climate / Geographical', placeholder: 'Actual Climate / Geographical' },
 			{ kind: 'text', name: 'identity-price',   label: 'Price',                  placeholder: 'Actual Price' }
+		]
+	},
+
+	/* ---- Wine Notes -------------------------------------------------- */
+	{
+		title: 'Wine Notes',
+		groups: [
+			{ kind: 'textarea', name: 'wine-notes', label: 'Additional Notes',
+				placeholder: 'Winemaking method, vineyard environment, biodynamic practices, altitude, soil, ageing vessel, producer story…'
+			}
 		]
 	}
 ];
@@ -982,18 +1044,28 @@ function indefiniteArticle(word) {
    ========================================================================== */
 
 function renderForm(formEl) {
-	/* Insert the built sections BEFORE the existing Export button. */
-	const exportButton = formEl.querySelector('#generateButton');
+	/* Insert the built sections BEFORE the action-button row. */
+	const actionsRow = formEl.querySelector('.form-actions');
 	for (const section of TASTING_SCHEMA) {
-		formEl.insertBefore(renderSection(section), exportButton);
+		formEl.insertBefore(renderSection(section), actionsRow);
 	}
 }
 
 function renderSection(section) {
-	const stackGroups = (section.groups || []).map(renderGroup);
-	const stack = el('div', { className: 'control-group-stack' }, ...stackGroups);
+	const regularGroups  = (section.groups || []).filter(g => g.kind !== 'textarea');
+	const textareaGroups = (section.groups || []).filter(g => g.kind === 'textarea');
 
-	const children = [el('h2', { text: section.title }), stack];
+	const children = [el('h2', { text: section.title })];
+
+	if (regularGroups.length) {
+		const stackGroups = regularGroups.map(renderGroup);
+		const stack = el('div', { className: 'control-group-stack' }, ...stackGroups);
+		children.push(stack);
+	}
+
+	for (const tg of textareaGroups) {
+		children.push(renderTextareaGroup(tg));
+	}
 
 	if (section.aromaBlock) {
 		const { aromaBlock } = section;
@@ -1135,6 +1207,7 @@ function renderGroup(group) {
 		case 'radio-plus-checkbox':  return renderRadioPlusCheckboxGroup(group);
 		case 'checkbox':             return renderCheckboxGroup(group);
 		case 'text':                 return renderTextGroup(group);
+		case 'textarea':             return renderTextareaGroup(group);
 	}
 	throw new Error(`Unknown group kind: ${group.kind}`);
 }
@@ -1203,6 +1276,31 @@ function renderTextGroup(group) {
 		)
 	);
 	return wrapGroup(group, body, true, group.name);
+}
+
+/* [Full-width textarea] — rendered as a control-group-stack with a label
+   row ("Additional Notes") and a textarea row, matching other sections. */
+function renderTextareaGroup(group) {
+	const textarea = document.createElement('textarea');
+	textarea.className = 'wine-notes-input';
+	textarea.id = group.name;
+	textarea.name = group.name;
+	textarea.placeholder = group.placeholder || '';
+	textarea.rows = 6;
+
+	/* Row 1: label only (light-green via zebra :nth-child(odd)) */
+	const labelRow = el('div', { className: 'control-group' },
+		el('div', { className: 'control-group-label' },
+			el('p', { text: group.label })
+		)
+	);
+
+	/* Row 2: full-width textarea (white via zebra :nth-child(even)) */
+	const textareaRow = el('div', { className: 'control-group' },
+		el('div', { className: 'wine-notes-body' }, textarea)
+	);
+
+	return el('div', { className: 'control-group-stack' }, labelRow, textareaRow);
 }
 
 /* Shared: the inner pill row for radios/checkboxes. The first radio in a row
@@ -1282,6 +1380,21 @@ function readNote() {
 		(multi[name] = multi[name] || []).push(getInputDisplayText(input));
 	}
 
+	/* Textarea fields. */
+	const textareas = {};
+	for (const ta of form.querySelectorAll('textarea')) {
+		const v = (ta.value || '').trim();
+		if (v) textareas[ta.name] = v;
+	}
+	if (!textareas['wine-notes']) {
+		/* Also look outside the form (renderTextareaGroup injects a standalone <section>). */
+		const ta = document.getElementById('wine-notes');
+		if (ta) {
+			const v = (ta.value || '').trim();
+			if (v) textareas['wine-notes'] = v;
+		}
+	}
+
 	/* Aroma/flavor tree: { 'nose-aromas': { primary: {floral:[...]}, ...}, ...} */
 	const aromas = { 'nose-aromas': {}, 'palate-flavors': {} };
 	for (const prefix of Object.keys(aromas)) {
@@ -1308,7 +1421,7 @@ function readNote() {
 		}
 	}
 
-	return { single, multi, aromas };
+	return { single, multi, textareas, aromas };
 }
 
 /* Prefer the associated <label> text; fall back to the input's value. Returns
@@ -1402,10 +1515,30 @@ function renderResultSection(section, note) {
 
 	/* Leading groups (e.g. Appearance.*, Nose.Condition+Intensity). */
 	if (section.groups && section.groups.length) {
-		const stack = renderResultStack(section.groups, note, { isTailStack: false });
-		if (stack) {
-			children.push(stack);
-			hasContent = true;
+		/* Textarea groups are rendered inline as a notes block, not a stack row. */
+		const regularGroups  = section.groups.filter(g => g.kind !== 'textarea');
+		const textareaGroups = section.groups.filter(g => g.kind === 'textarea');
+
+		if (regularGroups.length) {
+			const stack = renderResultStack(regularGroups, note, { isTailStack: false });
+			if (stack) { children.push(stack); hasContent = true; }
+		}
+
+		for (const tg of textareaGroups) {
+			const val = (note.textareas || {})[tg.name];
+			if (val) {
+				/* Label row + notes block, wrapped in a stack for consistent styling. */
+				const labelRow = el('div', { className: 'control-group' },
+					el('div', { className: 'control-group-label' },
+						el('p', { text: tg.label })
+					)
+				);
+				const notesRow = el('div', { className: 'control-group' },
+					el('div', { className: 'result-notes-block', text: val })
+				);
+				children.push(el('div', { className: 'control-group-stack' }, labelRow, notesRow));
+				hasContent = true;
+			}
 		}
 	}
 
@@ -1494,6 +1627,10 @@ function gatherResultEntries(group, note) {
 		case 'text': {
 			const val = note.single[group.name];
 			return val ? [{ sublabel: null, values: [val] }] : [];
+		}
+		case 'textarea': {
+			/* Handled directly in renderResultSection; skip here. */
+			return [];
 		}
 		case 'radio-grouped': {
 			/* Appearance.Colour: we need to know which grouping (sublabel) the
@@ -1630,6 +1767,9 @@ function buildSummaryText(note) {
 
 	const conclusions = buildConclusionsSummary(note);
 	if (conclusions) lines.push(`CONCLUSIONS: ${conclusions}`);
+
+	const wineNotes = (note.textareas || {})['wine-notes'];
+	if (wineNotes) lines.push(`WINE NOTES:\n${wineNotes}`);
 
 	return lines.join('\n\n');
 }
@@ -1798,6 +1938,10 @@ function csvRowsForGroup(group, note) {
 		case 'radio':
 		case 'text': {
 			const v = note.single[group.name];
+			return v ? [[group.label, v]] : [];
+		}
+		case 'textarea': {
+			const v = (note.textareas || {})[group.name];
 			return v ? [[group.label, v]] : [];
 		}
 		case 'radio-grouped': {
@@ -2263,6 +2407,11 @@ function init() {
 	initializeCopyFromAroma();
 	initializeModals();
 	initializeQRModal();
+	initializeReset();
+}
+
+function initializeReset() {
+	dom('resetButton').addEventListener('click', () => location.reload());
 }
 
 if (document.readyState === 'loading') {
